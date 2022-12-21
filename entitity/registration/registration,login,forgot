@@ -1,0 +1,126 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace CORE_SAMSSPORTS.Model.Registration
+{
+	public class Registration
+	{
+		public int? int_UserID { get; set; }
+		public string? vch_UserName { get; set; }
+
+        [Required(ErrorMessage = "Please enter name")]
+        [StringLength(50, ErrorMessage = "Name length can't be more than 50.")]
+        public string? vch_FullName { get; set; }
+
+        [Required(ErrorMessage = "Please enter phone number")]
+        [MinLength(10, ErrorMessage = "Mobile No. length can't be less than 10.")]
+        public string? vch_MobNo { get; set; }
+
+        [Required(ErrorMessage = "Please enter New password")]
+        [StringLength(50, ErrorMessage = "New password length can't be more than 50.")]
+        public string? vch_Password { get; set; }
+
+        [Required(ErrorMessage = "Please enter Confirm Password")]
+        [StringLength(50, ErrorMessage = "Confirm Password length can't be more than 50.")]
+        public string? vch_confirmPassword { get; set; }
+
+        [Required(ErrorMessage = "Email id is required.")]
+        [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "Invalid Email Id.")]
+        public string? vch_emailID { get; set; }
+		public string? vch_IPAddress { get; set; }
+		public string? vch_createdBy { get; set; }
+		public DateTime? dtm_CreatedOn { get; set; }
+		public string? vch_UpdatedBy { get; set; }
+		public DateTime? dtm_UpdatedOn { get; set; }
+		public string? bitDeletedFlag { get; set; }
+		public string? vch_OPassword { get; set; }
+		public int? intPhase { get; set; }
+
+        //[Required(ErrorMessage = "Please enter Captcha")]
+        //[StringLength(4, ErrorMessage = "captcha length can't be more than 4.")]
+        //[MinLength(4, ErrorMessage = "captcha length can't be less than 4.")]
+        public string? code { get; set; }
+
+        [Required(ErrorMessage = "Please enter OTP")]
+        [StringLength(6, ErrorMessage = "OTP length can't be more than 6.")]
+        [MinLength(6, ErrorMessage = "OTP length can't be less than 6.")]
+        public string? OTP { get; set; }
+
+		public string? char_Action { get; set; }
+        public string? vch_ImageName { get; set; }
+
+        public string? vch_SignatureName { get; set; }
+
+        public string? menulist { get; set; }
+
+        public int? SubmitStatus { get; set; }
+
+        public string? vch_UniqueRefNo { get; set; }
+
+        public int? intCourseID { get; set; }
+
+        public int? RoleId { get; set; }
+
+        public int? UserType { get; set; }
+
+
+
+    }
+    
+    public class MenuItem
+    {
+        public int id { get; set; }
+        public string GLOBALLINKNAME { get; set; }
+        public string PATHLINK { get; set; }
+
+    }
+     public class ForgtpasswordVerify_MobEmail_OTP
+    {
+        public string? vch_FullName { get; set; }
+
+        [Required(ErrorMessage = "Please enter phone number")]
+        [MinLength(10, ErrorMessage = "Mobile No. length can't be less than 10.")]
+        public string? vch_MobNo { get; set; }
+
+        [Required(ErrorMessage = "Email id is required.")]
+        [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "Invalid Email Id.")]
+        public string? vch_emailID { get; set; }
+
+        [Required(ErrorMessage = "Please enter Captcha")]
+        [StringLength(4, ErrorMessage = "captcha length can't be more than 4.")]
+        public string? code { get; set; }
+    }
+    
+    
+    [Required(ErrorMessage = "Please enter phone number")]
+        [MinLength(10, ErrorMessage = "Mobile No. length can't be less than 10.")]
+        public string? vch_MobNo { get; set; }
+        public string? vch_Password { get; set; }
+
+        [Required(ErrorMessage = "Please enter Captcha")]
+        [StringLength(4, ErrorMessage = "captcha length can't be more than 4.")]
+        public string? code { get; set; }
+}
+
+
+
+public class RegVerify_MobEmail_OTP
+    {
+        [Required(ErrorMessage = "Please enter name")]
+        [StringLength(50, ErrorMessage = "Name length can't be more than 50.")]
+
+        public string? vch_FullName { get; set; }
+
+        [Required(ErrorMessage = "Please enter phone number")]
+        [MinLength(10, ErrorMessage = "Mobile No. length can't be less than 10.")]
+        public string? vch_MobNo { get; set; }
+
+        [Required(ErrorMessage = "Email id is required.")]
+        [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "Invalid Email Id.")]
+        public string? vch_emailID { get; set; }
+
+        [Required(ErrorMessage = "Please enter Captcha")]
+        [StringLength(4, ErrorMessage = "captcha length can't be more than 4.")]
+        public string? code { get; set; }
+    }
+
