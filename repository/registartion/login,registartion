@@ -1,0 +1,180 @@
+using System.Collections.Generic;
+using CORE_SAMSSPORTS.Repository.Repositories.Interfaces;
+using CORE_SAMSSPORTS.Repository;
+using Dapper;
+using Microsoft.Extensions.Configuration;
+using System.Data.SqlClient;
+using System.Data;
+using CORE_SAMSSPORTS.Model.Registration;
+using CORE_SAMSSPORTS.Model.DTOs;
+using CORE_SAMSSPORTS.Core;
+using CORE_SAMSSPORTS.Model.Entities.Common;
+using Microsoft.VisualBasic;
+using CORE_SAMSSPORTS.Model.Entities.Dashboard;
+
+namespace CORE_SAMSSPORTS.Repository.Repositories
+{
+	public class RegistrationRepository:RepositoryBase,IRegistrationRepository
+	{
+        int strOutput;
+        public RegistrationRepository(IConnectionFactory connectionFactory) : base(connectionFactory)
+        {
+        }
+        public string Verify_MobEmail_OTP(RegVerify_MobEmail_OTP newuser)
+        {
+            string b;
+            try
+            {
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@char_Action", "A");
+                queryParameters.Add("@vch_MobileNumber", newuser.vch_MobNo);
+                queryParameters.Add("@vch_emailID", newuser.vch_emailID);
+                queryParameters.Add("@P_OutMsg", dbType: DbType.String, direction: ParameterDirection.Output, size: 10);
+                Connection.Execute("USP_Sports_NewUserRegistration", queryParameters, commandType: CommandType.StoredProcedure);
+
+                b = queryParameters.Get<string>("@P_OutMsg");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally { }
+
+            return b;
+        }
+
+        public string Verify_FORGOTPASSWORDMobEmail_OTP(ForgtpasswordVerify_MobEmail_OTP newuser)
+        {
+            string b;
+            try
+            {
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@char_Action", "V");
+                queryParameters.Add("@vch_MobileNumber", newuser.vch_MobNo);
+                //queryParameters.Add("@vch_emailID", newuser.vch_emailID);
+                queryParameters.Add("@P_OutMsg", dbType: DbType.String, direction: ParameterDirection.Output, size: 10);
+                Connection.Execute("USP_Sports_NewUserRegistration", queryParameters, commandType: CommandType.StoredProcedure);
+
+                b = queryParameters.Get<string>("@P_OutMsg");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally { }
+
+            return b;
+        }
+
+        public List<ForgtpasswordVerify_MobEmail_OTP> ViewNewUser(ForgtpasswordVerify_MobEmail_OTP newuser)
+        {
+            List<ForgtpasswordVerify_MobEmail_OTP> ilster = new List<ForgtpasswordVerify_MobEmail_OTP>();
+            try
+            {
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@char_Action", "L");
+                queryParameters.Add("@vch_MobileNumber", newuser.vch_MobNo);
+               
+                ilster = Connection.Query<ForgtpasswordVerify_MobEmail_OTP>("USP_Sports_NewUserRegistration", queryParameters, commandType: CommandType.StoredProcedure).ToList();
+                
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return ilster;
+
+        }
+
+
+        public string InsertNewUser(Registration newuser)
+        {
+            string b ;
+            try
+            {
+                
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@char_Action", newuser.char_Action, DbType.String, ParameterDirection.Input);
+                queryParameters.Add("@int_UserID", newuser.int_UserID);
+                queryParameters.Add("@vch_MobileNumber", newuser.vch_MobNo);
+                queryParameters.Add("@vch_emailID", newuser.vch_emailID);
+
+                queryParameters.Add("@vch_UserName", newuser.vch_UserName);
+                queryParameters.Add("@vch_FullName", newuser.vch_FullName);
+                queryParameters.Add("@vch_Password", newuser.vch_Password);
+
+                queryParameters.Add("@vch_OPassword", newuser.vch_OPassword);
+                queryParameters.Add("@vch_IP", newuser.vch_IPAddress);
+                queryParameters.Add("@vch_createdBy", newuser.vch_createdBy);
+                queryParameters.Add("@vch_ImageName", newuser.vch_ImageName);
+                queryParameters.Add("@vch_SignatureName", newuser.vch_SignatureName);
+                queryParameters.Add("@P_OutMsg", dbType: DbType.String, direction: ParameterDirection.Output, size: 10);
+                Connection.Execute("USP_Sports_NewUserRegistration", queryParameters, commandType: CommandType.StoredProcedure);
+
+                b = queryParameters.Get<string>("@P_OutMsg");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally { }
+
+            return b;
+        }
+        public Registration CheckLogin(Registration objLogIn)
+        {
+
+            Registration sysUser = null;
+            var p = new DynamicParameters();
+            p.Add("char_Action", objLogIn.char_Action);
+            p.Add("int_UserID", objLogIn.int_UserID);
+            p.Add("vch_MobileNumber", objLogIn.vch_MobNo);
+            p.Add("P_OutMsg", dbType: DbType.String, direction: ParameterDirection.Output,size:2);
+            //object[] arr = new object[] {
+            //                        "char_Action", objLogIn.char_Action,
+            //                        "int_UserID", objLogIn.int_UserID,
+            //                        "vch_MobileNumber",objLogIn.vch_MobNo
+            //                    };
+            try
+            {
+                sysUser = Connection.Query<Registration>("USP_Sports_NewUserRegistration_Core", p, commandType: CommandType.StoredProcedure).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+           
+            return sysUser;
+        }
+
+        public void WriteSysLog(SysLog SysLog)
+        {
+            SysLog.Id = Common.GuId();
+            SysLog.Date = DateTime.Now;
+            SysLog.IPAddressName = "";// Net.GetLocation(SysLog.IPAddress);
+
+            string sql = "INSERT INTO Sys_Log(Id,Date,Account,FullName,Type,IPAddress,IPAddressName,ModuleId,ModuleName,Result,Description,CreatorTime,CreatorUserId,RoleType,UID) " +
+                "Values (@Id, @Date, @Account, @FullName, @Type, @IPAddress,@IPAddressName,@ModuleId,@ModuleName,@Result,@Description,@CreatorTime,@CreatorUserId,@RoleType,@UID);";
+
+            strOutput = Connection.Execute(sql, new
+            {
+                SysLog.Id,
+                SysLog.Date,
+                SysLog.Account,
+                SysLog.FullName,
+                SysLog.Type,
+                SysLog.IPAddress,
+                SysLog.IPAddressName,
+                SysLog.ModuleId,
+                SysLog.ModuleName,
+                SysLog.Result,
+                SysLog.Description,
+                CreatorTime = DateTime.Now,
+                CreatorUserId = "",
+                SysLog.ROLETYPE,
+                SysLog.UID,
+            });
+        }
+    }
+}
