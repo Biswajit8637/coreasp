@@ -1,0 +1,209 @@
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="dataBox confirm__details">
+    <div class="breadcrumBox">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0);"><i class="fa fa-home"></i></a></li>
+            <li class="breadcrumb-item active"> Open Ticket</li>
+        </ol>
+    </div>
+    <div class="tabMenu">
+        <ul>
+            <li><a asp-controller="Helpdesk" asp-action="Newticket" class="btn btn-primary">New Ticket</a></li>
+            <li class="active"><a asp-controller="Helpdesk" asp-action="Openticket" class="btn btn-primary">Open Ticket</a></li>
+            <li><a asp-controller="Helpdesk" asp-action="Closeticket" class="btn btn-primary">Close Ticket</a></li>
+        </ul>
+    </div>
+    <div class="row align-items-center">
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Open Ticket
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-xs-12">
+                            <div class="form-group row">
+                                <label class="col-lg-2 col-md-2 col-sm-6">
+                                    Search Ticket By Subject :
+                                </label>
+                                <div class="col-lg-2 col-md-3 col-sm-4">
+                                    <input type="text" ID="txttikctsubj" class="form-control" style="width: 150px;">
+                                </div>
+                                <label class="col-lg-2 col-md-2 col-sm-4">
+                                    From Date :
+                                </label>
+                                <div class="col-lg-2 col-md-3 col-sm-4">
+                                    <input type="date" ID="txtFromDate" class="form-control" style="width: 150px;">
+                                </div>
+                                <div class="col-sm-2 form-group">
+                                    To Date  :
+                                </div>
+                                <div class="col-lg-2 col-md-3 col-sm-6">
+                                    <input type="date" ID="txtToDate" class="form-control" style="width: 150px;">
+                                </div>
+                                <div class="col-lg-2 col-md-3 col-sm-6">
+                                    <div class="col-sm-6">
+                                        <input type="button" value="Submit" onclick="Showresult()" class="btn btn-primary" />
+
+                                        @*<button id="btnSave" onclick="showedit();" class="btn btn-primary">Submit</button>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table  table-bordered ">
+                            <thead>
+                                <tr class="table-secondary">
+                                    <th>
+                                        Sl No.
+                                    </th>
+                                    <th>
+                                        Complaint No.
+                                    </th>
+
+                                    <th>Registered Mobile No</th>
+                                    <th>
+                                        Subject
+                                    </th>
+                                    <th>Category</th>
+                                    <th>Sub-Category</th>
+                                    <th>Description</th>
+                                    <th>Open By</th>
+                                    <th>Logged Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="openticket">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        OpenTicket();
+    });
+
+
+
+    function Showresult() {
+           if ($('#txttikctsubj').val() != "") {
+
+            SearchTicket();
+
+        }
+        else {
+
+            $("#openticket").empty();
+            OpenTicket();
+        }
+
+    }
+
+    function OpenTicket() {
+        debugger;
+
+        var objsubmit = new Object();
+        if ($('#txtFromDate').val() != "") {
+            debugger;
+            objsubmit.dtmFromdate = $.trim($('#txtFromDate').val());
+        }
+        else {
+            objsubmit.dtmFromdate = "2000-05-08 14:40:52";
+        }
+        if ($('#txtToDate').val() != "") {
+            debugger;
+            objsubmit.dtmTodate = $.trim($('#txtToDate').val());
+        }
+        else {
+            objsubmit.dtmTodate = "2060-05-08 14:40:52";
+        }
+
+            $.ajax({
+                url: '@Url.Action("FillOpenTicket", "Helpdesk")',
+                data: objsubmit,
+                type: "post",
+                async: false,
+                success: function (data) {
+                    var obj = data['OpenCloseTicket'];
+                    debugger;
+                    if (obj != null) {
+                        //$('#tblDatatable').DataTable().destroy();
+                        var print = "print";
+                        var htm = '';
+                        for (var i = 0; i < obj.length; i++) {
+                            var K = 1;
+                            K = K + i;
+                            htm += '<tr><td>' + K + '</td><td>' + obj[i].vchComplaintNo + '</td><td>' + obj[i].vchContactNo + '</td><td><a href="/Helpdesk/TicketViewDetailsSports?Id='+ obj[i].intTicketID +'&SType='+obj[i].intStudType +'&Type=A">'+ obj[i].vchSubject +' </a></td><td>' + obj[i].vchCategory + '</td><td>' + obj[i].vchSubCategory + '</td><td>' + obj[i].vchDesc + '</td><td>' + obj[i].vch_CollegeName + '</td><td>' + obj[i].dtmCreatedOn +  '</td>< </tr>';
+
+                        }
+
+                        $('#openticket').append(htm); //Datatabel tbody append
+
+                    }
+                }
+            });
+
+
+
+    }
+    function SearchTicket() {
+        debugger;
+
+        var objsubmit = new Object();
+        objsubmit.search = $.trim($('#txttikctsubj').val());
+        if ($('#txtFromDate').val() != "") {
+            debugger;
+            objsubmit.dtmFromdate = $.trim($('#txtFromDate').val());
+        }
+        else {
+            objsubmit.dtmFromdate = "2000-05-08 14:40:52";
+        }
+        if ($('#txtToDate').val() != "") {
+            debugger;
+            objsubmit.dtmTodate = $.trim($('#txtToDate').val());
+        }
+        else {
+            objsubmit.dtmTodate = "2060-05-08 14:40:52";
+        }
+
+            $.ajax({
+                url: '@Url.Action("FillOpenTicketBySearch", "Helpdesk")',
+                data: objsubmit,
+                type: "post",
+                async: false,
+                success: function (data) {
+                    $("#openticket").empty();
+                    var obj = data['searchlist'];
+                    debugger;
+                    if (obj != null) {
+                        //$('#tblDatatable').DataTable().destroy();
+                        var print = "print";
+                        var htm = '';
+                        for (var i = 0; i < obj.length; i++) {
+                            var K = 1;
+                            K = K + i;
+                            htm += '<tr><td>' + K + '</td><td>' + obj[i].vchComplaintNo + '</td><td><a href="/Helpdesk/TicketViewDetailsSports?Id=' + obj[i].intTicketID + '&SType=' + obj[i].intStudType + '&Type=A">' + obj[i].vchSubject + ' </a></td><td>' + obj[i].vchCategory + '</td><td>' + obj[i].vchSubCategory + '</td><td>' + obj[i].vchDesc + '</td><td>' + obj[i].vch_CollegeName + '</td><td>' + obj[i].dtmCreatedOn + '</td>< </tr>';
+
+                        }
+
+                        $('#openticket').append(htm); //Datatabel tbody append
+
+                    }
+                }
+            });
+
+
+
+    }
+   
+
+</script>
