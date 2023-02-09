@@ -1,0 +1,137 @@
+using CORE_SAMSSPORTS.Model.Entities.Dashboard;
+using CORE_SAMSSPORTS.Model.Entities.Helpdesk;
+using CORE_SAMSSPORTS.Repository.Repositories.Interfaces;
+using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CORE_SAMSSPORTS.Repository.Repositories
+{
+    public class HelpdeskRepository:RepositoryBase,IHelpdeskRepository
+    {
+        public HelpdeskRepository(IConnectionFactory connectionFactory) : base(connectionFactory)
+        {
+
+        }
+
+        #region"FillCategory// Added by biswajit"
+        public List<NewTicketEntity> FillCategoryDetails(NewTicketEntity objFill)
+        {
+            try
+            {
+                List<NewTicketEntity> ilster = new List<NewTicketEntity>();
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@PAction", objFill.Action);
+                queryParameters.Add("@intCategoryID", objFill.intCategoryID);
+                ilster = Connection.Query<NewTicketEntity>("USP_SUPPORTTRACKING_AE", queryParameters, commandType: CommandType.StoredProcedure).ToList();
+
+                return ilster;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
+        public string TicketDetails(NewTicketEntity objTicket)
+        {
+            String B;
+            try
+            {
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@PAction", objTicket.Action);
+                queryParameters.Add("@PID", objTicket.intTicketID);
+                queryParameters.Add("@PCid", objTicket.vchCategory);
+                queryParameters.Add("@PSubject", objTicket.vchSubject);
+                queryParameters.Add("@PScId", objTicket.vchSubCategory);
+                queryParameters.Add("@PCompDate", objTicket.dtmComplaintDate);
+                queryParameters.Add("@PContactNo", objTicket.vchContactNo);
+                queryParameters.Add("@PFileName", objTicket.vchFileName);
+                queryParameters.Add("@PStudentType", objTicket.StudType);
+                queryParameters.Add("@PDesc", objTicket.vchDesc);
+                queryParameters.Add("@PSType", objTicket.intStudType);
+                queryParameters.Add("@PCreatedBy", objTicket.intCreatedBy);
+                queryParameters.Add("@PMsgOut", dbType: DbType.String, direction: ParameterDirection.Output, size: 10);
+                Connection.Execute("USP_SUPPORTTRACKING_AE", queryParameters, commandType: CommandType.StoredProcedure);
+                B = queryParameters.Get<string>("@PMsgOut");
+            }
+            catch (Exception EX)
+            {
+                throw new Exception(EX.Message);
+            }
+            return B;
+        }
+        #region "View Ticket Details// Added by biswajit"
+        public List<OpenCloseTicketEntity> viewOpenTickDetails(OpenCloseTicketEntity objVsubcat)
+        {
+            try
+            {
+                List<OpenCloseTicketEntity> ilster = new List<OpenCloseTicketEntity>();
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@PAction", objVsubcat.PAction);
+                queryParameters.Add("@Pint_Cid", objVsubcat.intCid);
+                queryParameters.Add("@PStudID", objVsubcat.StudType);
+                queryParameters.Add("@Pint_TId", objVsubcat.intTicketID);
+                queryParameters.Add("@PSub", objVsubcat.search);
+                queryParameters.Add("@PStudentType", objVsubcat.intStudType);
+                queryParameters.Add("@PFromdate", objVsubcat.dtmFromdate);
+                queryParameters.Add("@PTodate", objVsubcat.dtmTodate);
+                ilster = Connection.Query<OpenCloseTicketEntity>("USP_SUPPORTTRACKING_VIEW", queryParameters, commandType: CommandType.StoredProcedure).ToList();
+
+                return ilster;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
+
+        public List<SubCategory> ViewTicketHistory(SubCategory objHistory)
+        {
+               try
+                {
+                    List<SubCategory> list = new List<SubCategory>();
+                    var queryParameters = new DynamicParameters();
+                    queryParameters.Add("@PAction", objHistory.PAction);
+                    queryParameters.Add("@PSType", objHistory.intStudType);
+                queryParameters.Add("@PID", objHistory.intID);
+                list = Connection.Query<SubCategory>("USP_SUPPORTTRACKING_AE", queryParameters, commandType: CommandType.StoredProcedure).ToList();
+
+                    return list;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            
+        }
+
+        public string UpdateTicket(SubCategory objsubcat)
+        {
+            String B;
+            try
+            {
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@PAction", objsubcat.PAction);
+                queryParameters.Add("@PID", objsubcat.intID);
+                queryParameters.Add("@PSubject", objsubcat.vchSubject);
+                queryParameters.Add("@PDesc", objsubcat.vchDesc);
+                queryParameters.Add("@PCreatedBy", objsubcat.intCreatedBy);
+                queryParameters.Add("@PUpdatedBy", objsubcat.intCreatedBy);
+                queryParameters.Add("@PMsgOut", dbType: DbType.String, direction: ParameterDirection.Output, size: 10);
+                Connection.Execute("USP_SUPPORTTRACKING_AE", queryParameters, commandType: CommandType.StoredProcedure);
+                B = queryParameters.Get<string>("@PMsgOut");
+            }
+            catch (Exception EX)
+            {
+                throw new Exception(EX.Message);
+            }
+            return B;
+        }
+    }
+}
