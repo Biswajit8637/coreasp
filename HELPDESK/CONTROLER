@@ -1,0 +1,504 @@
+using CORE_SAMSSPORTS.Core;
+using CORE_SAMSSPORTS.Core.Security;
+using CORE_SAMSSPORTS.Model.Entities.Helpdesk;
+using CORE_SAMSSPORTS.Model.Entities.IndexCard;
+using CORE_SAMSSPORTS.Repository.Repositories;
+using CORE_SAMSSPORTS.Repository.Repositories.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
+using System.IO;
+using System.Net.Mime;
+using System.Security.Claims;
+using System.Security.Cryptography.Xml;
+using static CORE_SAMSSPORTS.Core.Net;
+
+namespace CORE_SAMSSPORTS.Web.Controllers
+{
+    public class HelpdeskController : Controller
+    {
+        private readonly IHelpdeskRepository _HelpdeskRepository;
+        public readonly Icommenactivestatus _commenactivestatus;
+        string StrPath = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("AppSetting")["StrPathView"];
+        string type;
+
+        public HelpdeskController(IHelpdeskRepository Helpdesk, Icommenactivestatus commenactivestatus)
+        {
+            _HelpdeskRepository = Helpdesk;
+            _commenactivestatus = commenactivestatus;
+        }
+        
+
+        public async Task<IActionResult> Newticket()
+        {
+            List<NewTicketEntity> ListOfcategory = new List<NewTicketEntity>();
+            try
+            {
+                if (User.Identity.IsAuthenticated)//Checking for Authenticated
+                {
+                    var identity = User.Identity as ClaimsIdentity;
+                    if (identity != null)
+                    {
+                        NewTicketEntity objcat = new NewTicketEntity();
+                        objcat.Action = 'F';
+                        ListOfcategory = _HelpdeskRepository.FillCategoryDetails(objcat);
+                        ViewBag.FillCategory = ListOfcategory;
+                    }
+                    else
+                    {
+                        return Json(new { state = ResultType.error.ToString(), message = "Invalid User" });
+                    }
+                }
+                else
+                {
+                    return Json(new { state = ResultType.error.ToString(), message = "Invalid User" });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CascadingOfSubCategory(int intID)
+        {
+            List<NewTicketEntity> ListOfsubcategory = new List<NewTicketEntity>();
+            try
+            {
+                if (User.Identity.IsAuthenticated)//Checking for Authenticated
+                {
+                    var identity = User.Identity as ClaimsIdentity;
+                    if (identity != null)
+                    {
+                        NewTicketEntity objcat = new NewTicketEntity();
+                        objcat.Action = 'S';
+                        objcat.intCategoryID = Convert.ToInt32(intID);
+                        ListOfsubcategory = _HelpdeskRepository.FillCategoryDetails(objcat);
+                        //ListOfsubcategory.Insert(0, new NewTicketEntity { intID = 0, vchSubCategory = "select" });
+
+
+
+                    }
+                    else
+                    {
+                        return Json(new { state = ResultType.error.ToString(), message = "Invalid User" });
+                    }
+                }
+                else
+                {
+                    return Json(new { state = ResultType.error.ToString(), message = "Invalid User" });
+                }
+            }
+            catch (Exception ex)
+            {
+                _commenactivestatus.LogError("Helpdesk", "CascadingOfSubCategory", "Cascading", ex);
+                throw new Exception(ex.Message);
+            }
+            return Json(new { D = ListOfsubcategory });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NewticketSubmit()
+        {
+            string ReturnMsg;
+            var datal = HttpContext.Request.Form["Elements"];
+            List<NewTicketEntity> ResultDtls = JsonConvert.DeserializeObject<List<NewTicketEntity>>(datal);
+            NewTicketEntity page_data = ResultDtls.First();
+            var Filename = "";
+            if (HttpContext.Request.Form.Files.Count>0)
+            {
+                IFormFile file1 = HttpContext.Request.Form.Files[0];
+                
+                Filename = Convert.ToInt32(HttpContext.User.FindFirstValue(ClaimTypes.Sid)) + "_Complain_" + DateTime.Now.Date.ToString("dd-MMM-yyyy") + "_" + DateTime.Now.ToString("hh_mm") + Path.GetExtension(file1.FileName);
+                string fileNameWithPath = Path.Combine(StrPath, Filename);
+
+                using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                {
+                    file1.CopyTo(stream);
+                }
+            }
+            try
+            {
+                if (User.Identity.IsAuthenticated)//Checking for Authenticated
+                {
+                    var identity = User.Identity as ClaimsIdentity;
+                    if (identity != null)
+                    {
+                        page_data.Action = 'A';
+                        page_data.StudType = 1;
+                        page_data.intStudType = 1;
+                       // page_data.intCreatedBy = Convert.ToInt32(HttpContext.User.FindFirstValue(ClaimTypes.Sid)); //pass user id through claimid..
+                        page_data.intCreatedBy = 2;
+                        page_data.vchFileName = Filename;
+                        ReturnMsg = _HelpdeskRepository.TicketDetails(page_data);
+                        if (ReturnMsg == "1")
+                        {
+                            return Json(new { state = ResultType.success.ToString(), message = "Data Saved Successfully" });
+                        }
+                        else
+                        {
+                            return Json(new { state = ResultType.error.ToString(), message = "Invalid Error" });
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { state = ResultType.error.ToString(), message = "Invalid User" });
+                    }
+
+                }
+                else
+                {
+                    return Json(new { state = ResultType.error.ToString(), message = "Invalid User" });
+                }
+            }
+            catch (Exception ex)
+            {
+                _commenactivestatus.LogError("Helpdesk", "NewticketSubmit", "Ticketsubmit", ex);
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> Openticket()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Registration");
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> FillOpenTicket(OpenCloseTicketEntity objVsubcat)
+        {
+
+            try
+            {
+                if (User.Identity.IsAuthenticated)//Checking for Authenticated
+                {
+                    var identity = User.Identity as ClaimsIdentity;
+                    if (identity != null)
+                    {
+
+                        
+                        List<OpenCloseTicketEntity> OpenCloseTicket = new List<OpenCloseTicketEntity>();
+                        OpenCloseTicketEntity openCloseTicketEntity = new OpenCloseTicketEntity();
+                        openCloseTicketEntity.PAction = "O";
+                        openCloseTicketEntity.StudType = 1;
+                        //objVsubcat.intCid = Convert.ToInt32(HttpContext.User.FindFirstValue(ClaimTypes.Sid)); //pass user id through claimid..
+                        openCloseTicketEntity.intCid = 2;
+                        openCloseTicketEntity.dtmFromdate = objVsubcat.dtmFromdate;
+                        openCloseTicketEntity.dtmTodate = objVsubcat.dtmTodate;
+                        OpenCloseTicket = _HelpdeskRepository.viewOpenTickDetails(openCloseTicketEntity);
+                        return Json(new { state = ResultType.success.ToString(), OpenCloseTicket = OpenCloseTicket });
+                    }
+                    else
+                    {
+                        return Json(new { state = ResultType.error.ToString(), message = "Invalid User" });
+                    }
+
+                }
+                else
+                {
+                    return Json(new { state = ResultType.error.ToString(), message = "Invalid User" });
+                }
+            }
+            catch (Exception ex)
+            {
+                _commenactivestatus.LogError("Helpdesk", "FillOpenTicket", "FillOpenTicket", ex);
+                throw new Exception(ex.Message);
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FillOpenTicketBySearch(OpenCloseTicketEntity objVsubcat)
+        {
+
+            try
+            {
+                if (User.Identity.IsAuthenticated)//Checking for Authenticated
+                {
+                    var identity = User.Identity as ClaimsIdentity;
+                    if (identity != null)
+                    {
+                        OpenCloseTicketEntity openCloseTicketEntity = new OpenCloseTicketEntity();
+
+                        List<OpenCloseTicketEntity> Searchlist = new List<OpenCloseTicketEntity>();
+
+                        openCloseTicketEntity.PAction = "S";
+                        openCloseTicketEntity.StudType = 1;
+                        //objVsubcat.intCid = Convert.ToInt32(HttpContext.User.FindFirstValue(ClaimTypes.Sid)); //pass user id through claimid..
+                        openCloseTicketEntity.intCid = 2;
+                        openCloseTicketEntity.search = objVsubcat.search;
+                        openCloseTicketEntity.dtmFromdate = objVsubcat.dtmFromdate;
+                        openCloseTicketEntity.dtmTodate = objVsubcat.dtmTodate;
+                        Searchlist = _HelpdeskRepository.viewOpenTickDetails(openCloseTicketEntity);
+                        return Json(new { state = ResultType.success.ToString(), searchlist = Searchlist });
+                    }
+                    else
+                    {
+                        return Json(new { state = ResultType.error.ToString(), message = "Invalid User" });
+                    }
+
+                }
+                else
+                {
+                    return Json(new { state = ResultType.error.ToString(), message = "Invalid User" });
+                }
+            }
+            catch (Exception ex)
+            {
+                _commenactivestatus.LogError("Helpdesk", "FillOpenTicketBySearch", "FillOpenTicket", ex);
+                throw new Exception(ex.Message);
+            }
+
+        }
+
+
+        public async Task<IActionResult> Closeticket()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Registration");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FillCloseTicket(OpenCloseTicketEntity objVsubcat)
+        {
+
+            try
+            {
+                if (User.Identity.IsAuthenticated)//Checking for Authenticated
+                {
+                    var identity = User.Identity as ClaimsIdentity;
+                    if (identity != null)
+                    {
+                        OpenCloseTicketEntity openCloseTicketEntity = new OpenCloseTicketEntity();
+                        List<OpenCloseTicketEntity> OpenCloseTicket = new List<OpenCloseTicketEntity>();
+                        openCloseTicketEntity.PAction = "C";
+                        openCloseTicketEntity.StudType = 1;
+                        //objVsubcat.intCid = Convert.ToInt32(HttpContext.User.FindFirstValue(ClaimTypes.Sid)); //pass user id through claimid..
+                        openCloseTicketEntity.intCid = 2;
+                        openCloseTicketEntity.dtmFromdate = objVsubcat.dtmFromdate;
+                        openCloseTicketEntity.dtmTodate = objVsubcat.dtmTodate;
+                        OpenCloseTicket = _HelpdeskRepository.viewOpenTickDetails(openCloseTicketEntity);
+                        return Json(new { state = ResultType.success.ToString(), OpenCloseTicket = OpenCloseTicket });
+                    }
+                    else
+                    {
+                        return Json(new { state = ResultType.error.ToString(), message = "Invalid User" });
+                    }
+
+                }
+                else
+                {
+                    return Json(new { state = ResultType.error.ToString(), message = "Invalid User" });
+                }
+            }
+            catch (Exception ex)
+            {
+                _commenactivestatus.LogError("Helpdesk", "FillCloseTicket", "FillCloseTicket", ex);
+                throw new Exception(ex.Message);
+            }
+
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> FillCloseTicketBySearch(OpenCloseTicketEntity objVsubcat)
+        {
+
+            try
+            {
+                if (User.Identity.IsAuthenticated)//Checking for Authenticated
+                {
+                    var identity = User.Identity as ClaimsIdentity;
+                    if (identity != null)
+                    {
+                        OpenCloseTicketEntity openCloseTicketEntity = new OpenCloseTicketEntity();
+
+                        List<OpenCloseTicketEntity> Searchlist = new List<OpenCloseTicketEntity>();
+
+                        openCloseTicketEntity.PAction = "D";
+                        openCloseTicketEntity.StudType = 1;
+                        //objVsubcat.intCid = Convert.ToInt32(HttpContext.User.FindFirstValue(ClaimTypes.Sid)); //pass user id through claimid..
+                        openCloseTicketEntity.intCid = 2;
+                        openCloseTicketEntity.search = objVsubcat.search;
+                        openCloseTicketEntity.dtmFromdate = objVsubcat.dtmFromdate;
+                        openCloseTicketEntity.dtmTodate = objVsubcat.dtmTodate;
+                        Searchlist = _HelpdeskRepository.viewOpenTickDetails(openCloseTicketEntity);
+                        return Json(new { state = ResultType.success.ToString(), searchlist = Searchlist });
+                    }
+                    else
+                    {
+                        return Json(new { state = ResultType.error.ToString(), message = "Invalid User" });
+                    }
+
+                }
+                else
+                {
+                    return Json(new { state = ResultType.error.ToString(), message = "Invalid User" });
+                }
+            }
+            catch (Exception ex)
+            {
+                _commenactivestatus.LogError("Helpdesk", "FillCloseTicketBySearch", "FillCloseTicketBySearch", ex);
+                throw new Exception(ex.Message);
+            }
+
+        }
+
+        public async Task<IActionResult> TicketViewDetailsSports(OpenCloseTicketEntity objVsubcat)
+        {
+            
+            try
+            {
+                OpenCloseTicketEntity TicketDetails = new OpenCloseTicketEntity();
+                if (!string.IsNullOrEmpty(HttpContext.Request.Query["Id"]))
+                {
+
+                    type = HttpContext.Request.Query["Type"].ToString();
+
+                    ViewBag.type = type;
+                    ViewBag.id = HttpContext.Request.Query["Id"];
+
+                    if (type == "A")
+                    {
+                        TicketDetails.PAction = "R";
+                        TicketDetails.intTicketID = Convert.ToInt32(HttpContext.Request.Query["Id"]);
+                        TicketDetails.intStudType = 1;
+                    }
+                    else
+                    {
+                        TicketDetails.PAction = "M";
+                        TicketDetails.intTicketID = Convert.ToInt32(HttpContext.Request.Query["Id"]);
+                    }
+                    if (HttpContext.User.FindFirstValue(ClaimTypes.Sid).ToString() != "")
+                    {
+                        TicketDetails.intCid = Convert.ToInt32(HttpContext.User.FindFirstValue(ClaimTypes.Sid));
+                        // TicketDetails.intCid = 
+                    }
+                    TicketDetails.dtmFromdate = DateTime.ParseExact("2000-05-08 14:40:52", "yyyy-MM-dd HH:mm:ss",
+                                                   System.Globalization.CultureInfo.InvariantCulture);
+                    TicketDetails.dtmTodate = DateTime.ParseExact("2060-05-08 14:40:52", "yyyy-MM-dd HH:mm:ss",
+                                            System.Globalization.CultureInfo.InvariantCulture);
+
+
+                }
+                List<OpenCloseTicketEntity> listvtick = new List<OpenCloseTicketEntity>();
+
+                //"View Ticket History"
+                //----------------------
+                List<SubCategory> HistoryList = new List<SubCategory>();
+                SubCategory obj = new SubCategory();
+                obj.PAction = "H";
+                obj.intID = Convert.ToInt32(HttpContext.Request.Query["Id"]); //Ref. TicketOpenSports.aspx.cs page
+                obj.intStudType = Convert.ToInt32(HttpContext.Request.Query["SType"]); //Ref. TicketOpenSports.aspx.cs page
+                HistoryList = _HelpdeskRepository.ViewTicketHistory(obj);
+                listvtick = _HelpdeskRepository.viewOpenTickDetails(TicketDetails);
+                if (listvtick.Count > 0)
+                {
+                    ViewBag.listvtick = listvtick;
+                    ViewBag.HistoryList = HistoryList;
+                }
+            }
+            catch(Exception ex)
+            {
+                _commenactivestatus.LogError("Helpdesk", "TicketViewDetailsSports", "TicketViewDetailsSports", ex);
+                throw new Exception(ex.Message);
+            }
+
+
+
+            return View();
+            
+        }
+
+        public IActionResult ButtonSave(string type,string id)
+        {
+            int outval = 0;
+            SubCategory objdst = new SubCategory();
+            try
+            {
+                if (HttpContext.User.FindFirstValue(ClaimTypes.Sid).ToString() != "")
+                {
+                    objdst.intCreatedBy = Convert.ToInt32(HttpContext.User.FindFirstValue(ClaimTypes.Sid));
+                }
+                if (!string.IsNullOrEmpty(id))
+                {
+                    objdst.PAction = "U";
+                    objdst.intID = Convert.ToInt32(id);
+                }
+                //objdst.vchDesc = Request.Form[txtDesc.UniqueID];
+                objdst.vchSubject = type;
+                outval = Convert.ToInt32(_HelpdeskRepository.UpdateTicket(objdst));
+                if (type == "A")
+                {
+                    return Json(new { state = ResultType.success.ToString(), message = "Ticket Closed Successfully !" });
+                }
+                else
+                {
+                    return Json(new { state = ResultType.success.ToString(), message = "Ticket Opened Successfully !" });
+                }
+               // return View();
+            }
+            catch(Exception ex)
+            {
+                _commenactivestatus.LogError("Helpdesk", "ButtonSave", "ButtonSave", ex);
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public IActionResult BindPdf(string clsid, string id)
+        {
+            
+            string contentType = "";
+          
+            try
+            {
+                if (clsid == "1")
+                {
+                    StrPath = StrPath + "Documents/Notice/";
+                }
+                else if (clsid == "2")
+                {
+                    StrPath = StrPath + "SupportTracking/";
+                }
+
+                
+                    string filePath = Path.Combine(StrPath, id);
+                    if (filePath == null) return null;
+                    string ext = Path.GetExtension(filePath);
+                    if (ext == ".pdf")
+                    {
+                        contentType = "application/pdf";
+                    }
+                
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                    return File(fileBytes, contentType);
+                
+               
+                
+                
+               
+
+
+            }
+            catch (Exception ex)//for bind complain pdf
+            {
+
+                _commenactivestatus.LogError("Helpdesk", "BindPdf", "BindPdf", ex);
+                throw new Exception(ex.Message);
+            }
+        }
+
+    }
+}
