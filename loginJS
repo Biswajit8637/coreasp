@@ -1,0 +1,649 @@
+function preventBack() {
+    window.history.forward(1);
+}
+setTimeout("preventBack()", 0);
+window.onunload = function () { null };
+$(document).ready(function () {
+ 
+    $("#switchCode").click(function () {
+
+        
+
+        $("#imgcode").attr("src", ROOT+"/Registration/GetAuthCode?time=" + Math.random());
+        $('#txt_code').val('');
+    });
+    //code added here
+    $.login = {
+        loginClick: function () {
+            var $Mobile = $("#txtMobileNo");
+            var $Password = $("#txtPassword");
+            var $CaptchaCode = $("#txt_code");
+            if ($.trim($Mobile.val()) == "") {
+                //$Mobile.focus();
+                $('#txtMobileNo').addClass("form-control shadow-sm is-invalid");
+                jAlert('txtMobileNo','Please provide Mobile No.');
+                return false;
+            }
+            else if ($Mobile.val().length !== 10) {
+                $Mobile.focus();
+                $('#txtMobileNo').addClass("form-control shadow-sm is-invalid");
+                jAlert('txtMobileNo','Please provide a valid Mobile No.');
+                return false;
+            }
+            else {
+                $('#txtMobileNo').removeClass("is-invalid");
+            }
+            if ($.trim($Password.val()) == "") {
+                $Password.focus();
+                $('#txtPassword').addClass("form-control shadow-sm is-invalid");
+                jAlert('txtPassword', 'Please provide Password');
+                return false;
+            }
+            else {
+                $('#txtPassword').removeClass("is-invalid");
+            }
+            if ($.trim($CaptchaCode.val()) == "") {
+                $CaptchaCode.focus();
+                $('#txt_code').addClass("form-control shadow-sm is-invalid");
+                jAlert('txt_code', 'Please enter Captcha');
+                return false;
+            }
+            else {
+                $('#txt_code').removeClass("is-invalid");
+                $('#ErrorName').html("");
+            }
+            return true;
+        },
+        OTPClick: function () {
+            var $username = $("#textUser");
+            var $Mobile = $("#textmobile");
+            var $Email = $("#textemail");
+            var $code = $("#txt_code");
+
+
+            if ($.trim($username.val()) == "") {
+                $username.focus();
+                $('#textUser').addClass("form-control shadow-sm is-invalid");
+                jAlert('textUser', 'Applicant Name is required!');
+                return false;
+            }
+            else {
+                $('#textUser').removeClass("is-invalid");
+            }
+
+            if ($.trim($Mobile.val()) == "") {
+                $Mobile.focus();
+                $('#textmobile').addClass("form-control shadow-sm is-invalid");
+                jAlert('textmobile', 'Mobile No. is required!');
+                return false;
+            }
+            else {
+                $('#textmobile').removeClass("is-invalid");
+            }
+
+            if ($.trim($Email.val()) == "") {
+                $Email.focus();
+                $('#textemail').addClass("form-control shadow-sm is-invalid");
+                jAlert('textemail', 'Email Id is required!');
+                return false;
+            }
+            else {
+                $('#textemail').removeClass("is-invalid");
+            }
+
+            var Email1 = isEmail($('#textemail').val());
+            if (Email1 == false) {
+                jAlert('textemail', 'Please Enter Valid Email Address!');
+                return false;
+            }
+
+            if ($.trim($code.val()) == "") {
+                $code.focus();
+                $('#txt_code').addClass("form-control shadow-sm is-invalid");
+                jAlert('txt_code', 'Captcha is required!');
+                return false; S
+            }
+            else {
+                $('#txt_code').removeClass("is-invalid");
+            }
+
+            return true;
+        },
+        FORGOTOTPClick: function () {
+            
+            var $Mobile = $("#textmobile");
+           // var $Email = $("#textemail");
+            var $code = $("#txt_code");
+
+
+           
+
+            if ($.trim($Mobile.val()) == "") {
+                $Mobile.focus();
+                $('#textmobile').addClass("form-control shadow-sm is-invalid");
+                jAlert('textmobile', 'Mobile No. is required!');
+                return false;
+            }
+            else {
+                $('#textmobile').removeClass("is-invalid");
+            }
+
+            //if ($.trim($Email.val()) == "") {
+            //    $Email.focus();
+            //    $('#textemail').addClass("form-control shadow-sm is-invalid");
+            //    jAlert('Email Id is required!');
+            //    return false;
+            //}
+            //else {
+            //    $('#textemail').removeClass("is-invalid");
+            //}
+
+            var Email1 = isEmail($('#textemail').val());
+            if (Email1 == false) {
+                jAlert('textemail', 'Please Enter Valid Email Address!');
+                return false;
+            }
+
+            if ($.trim($code.val()) == "") {
+                $code.focus();
+                $('#txt_code').addClass("form-control shadow-sm is-invalid");
+                jAlert('txt_code', 'Captcha is required!');
+                return false; S
+            }
+            else {
+                $('#txt_code').removeClass("is-invalid");
+            }
+
+            return true;
+        },
+        SubmitClick: function () {
+
+            var $NewPassword = $("#textNewPassword");
+            var $confirm$NewPassword = $("#textconfirmPassword");
+            var $verifycode = $("#txt_verifycode");
+
+            if ($.trim($NewPassword.val()) == "") {
+                $NewPassword.focus();
+                $('#textNewPassword').addClass("form-control shadow-sm is-invalid");
+                jAlert('textNewPassword','New Password is required!');
+                return false;
+            }
+            else {
+                $('#textNewPassword').removeClass("is-invalid");
+            }
+
+            if ($.trim($confirm$NewPassword.val()) == "") {
+                $confirm$NewPassword.focus();
+                $('#textconfirmPassword').addClass("form-control shadow-sm is-invalid");
+                jAlert('textconfirmPassword','Confirm New Password is required!');
+                return false;
+            }
+            else {
+                $('#textconfirmPassword').removeClass("is-invalid");
+            }
+            if ($.trim($verifycode.val()) == "") {
+                $verifycode.focus();
+                $('#txt_verifycode').addClass("form-control shadow-sm is-invalid");
+                jAlert('txt_verifycode','OTP is required!');
+                return false;
+            }
+            else {
+                $('#txt_verifycode').removeClass("is-invalid");
+            }
+            return true;
+        },
+        ForgotSubmitClick: function () {
+
+            var $NewPassword = $("#textNewPassword");
+            var $confirm$NewPassword = $("#textconfirmPassword");
+            var $verifycode = $("#txt_verifycode");
+
+            if ($.trim($NewPassword.val()) == "") {
+                $NewPassword.focus();
+                $('#textNewPassword').addClass("form-control shadow-sm is-invalid");
+                jAlert('textNewPassword','New Password is required!');
+                return false;
+            }
+            else {
+                $('#textNewPassword').removeClass("is-invalid");
+            }
+
+            if ($.trim($confirm$NewPassword.val()) == "") {
+                $confirm$NewPassword.focus();
+                $('#textconfirmPassword').addClass("form-control shadow-sm is-invalid");
+                jAlert('textconfirmPassword','Confirm New Password is required!');
+                return false;
+            }
+            else {
+                $('#textconfirmPassword').removeClass("is-invalid");
+            }
+            if ($.trim($verifycode.val()) == "") {
+                $verifycode.focus();
+                $('#txt_verifycode').addClass("form-control shadow-sm is-invalid");
+                jAlert('txt_verifycode','OTP is required!');
+                return false;
+            }
+            else {
+                $('#txt_verifycode').removeClass("is-invalid");
+            }
+            return true;
+        }
+    }
+
+    $("#Login_button").click(function () {
+     
+        if ($.login.loginClick() == true) {
+            $("#Login_button").html("Logging in..");
+            var objOTP4 = new Object;
+
+            objOTP4.vch_MobNo = $.trim($('#txtMobileNo').val());
+            objOTP4.vch_Password = Encryption($.trim($('#txtPassword').val()));
+            objOTP4.code = $.trim($('#txt_code').val());
+
+            //var $username = $("#MobileNo");
+            //var $password = $("#Password");
+            //var $code = $("#txt_code");
+            //var pwt = Encryption($.trim($('#Password').val()));
+
+            $("#Login_button").attr('disabled', 'disabled').html("Logging in..");
+            $.ajax({
+                url: ROOT + '/Registration/CheckLogin',
+                data: objOTP4,
+                type: "post",
+                success: function (data) {
+                    var obj = JSON.stringify(data);
+                    var result = JSON.parse(obj);
+                    if (result.state == "success") {
+                        if (result.data == "0") {
+                            var url = ROOT + '/StudentDashboard/StudentDashbaord';
+                            //window.location.href = '@Url.Content("~/StudentDashboard/StudentDashbaord")'; 
+                            window.setTimeout(function () {
+                                window.location.href = url;
+                            }, 500);
+                        };
+                    }
+                    else if (result.state == "warning") {
+                        $('#txt_code').val('');
+                        $("#switchCode").click();
+                        jAlert("SAMS", result.message);
+                        $("#Login_button").removeAttr('disabled').html("Login");
+                        
+                    }
+                    else {
+                        $('#txt_code').val('');
+                        $('#txtPassword').val('');
+                        $('#txtMobileNo').val('');
+                        $("#switchCode").click();
+                        jAlert("SAMS", "Login Failed!, Invalid UserId or Password!");
+                        $("#Login_button").removeAttr('disabled').html("Login");
+                        
+                         }
+                }
+            });
+        }
+    });
+
+    $("#OTP_button").click(function () {
+
+        if ($.login.OTPClick() == true) {
+            var objOTP = new Object;
+
+            objOTP.vch_FullName = $.trim($('#textUser').val());
+            objOTP.vch_MobNo = $.trim($('#textmobile').val());
+            objOTP.vch_emailID = $.trim($('#textemail').val());
+            objOTP.code = $.trim($('#txt_code').val());
+
+
+            var $Mobile_1 = $("#textmobile");
+            var $Email_1 = $("#textemail");
+
+
+            $.ajax({
+                type: "POST",
+                url: ROOT + '/Registration/SendOTP',
+                data: objOTP,
+                success: function (data) {
+                    var obj = JSON.stringify(data);
+                    var result = JSON.parse(obj);
+                    if (result.state == "success") {
+                        debugger;
+                        $("#Resend_button").hide();
+                        $("#Div1").hide();
+                        $("#Div2").show();
+                        var mobiletext = "******" + $Mobile_1.val().toString().substring($Mobile_1.val().length, 4);
+                        $("#lblmobile").html(mobiletext);
+                        $("#lblemail").html($Email_1.val());
+                        //OTPTimer();
+                        GenOTP("SO");
+                    }
+                    else {
+                        if (result.controlid != "") {
+                            $('#txt_code').val('');
+                            $("#switchCode").click();//re-evaluate captcha
+                            jAlert("SAMS",result.message);
+                        }
+                    }
+                }
+            });
+        }
+    });
+
+   
+
+    $("#FORGOTOTP_button").click(function () {
+        if ($.login.FORGOTOTPClick() == true) {
+            var objOTP = new Object;
+
+            
+            objOTP.vch_MobNo = $.trim($('#textmobile').val());
+            objOTP.vch_emailID = $.trim($('#textemail').val());
+            objOTP.code = $.trim($('#txt_code').val());
+
+
+            var $Mobile_1 = $("#textmobile");
+            var $Email_1 = $("#textemail");
+
+            
+            $.ajax({
+                type: "POST",
+                url: ROOT+'/Registration/FORGROTSendOTP',
+                data: objOTP,
+                success: function (data) {
+                    var obj = JSON.stringify(data);
+                    var result = JSON.parse(obj);
+                    if (result.state == "success") {
+                        $("#Resend_button").hide();
+                        $("#Div1").hide();
+                        $("#Div2").show();
+                        var mobiletext = "******" + $Mobile_1.val().toString().substring($Mobile_1.val().length, 4);
+                        $("#lblmobile").html(mobiletext);
+                        $("#lblemail").html($Email_1.val());
+                       // OTPTimer();
+                        GenForgotOTP("SO");
+                    }
+                    else {
+                        if (result.controlid != "") {
+                            $('#txt_code').val('');
+                            $("#switchCode").click();//re-evaluate captcha
+                            jAlert("SAMS",result.message);
+                        }
+                    }
+                }
+            });
+        }
+    });
+
+    //Resend OTP code
+    $("#Resend_button").click(function () {
+        $("#Resend_button").hide();
+
+        var objOTP2 = new Object;
+
+        objOTP2.vch_FullName = $.trim($('#textUser').val());
+        objOTP2.vch_MobNo = $.trim($('#textmobile').val());
+        objOTP2.vch_emailID = $.trim($('#textemail').val());
+        objOTP2.code = $.trim($('#txt_code').val());
+
+
+        $.ajax({
+            url: ROOT +'/Registration/SendOTP',
+            data: objOTP2,
+            type: "post",
+            success: function (data) {
+                var obj = JSON.stringify(data);
+                var result = JSON.parse(obj);
+                if (result.state == "success") {
+                  //  OTPTimer();
+                    GenOTP("RO");
+                }
+                else {
+                    //toastr.error(data.message);
+                }
+            }
+        });
+    });
+
+    $("#ForgotResend_button").click(function () {
+        $("#ForgotResend_button").hide();
+
+        var objOTP2 = new Object;
+
+        objOTP2.vch_FullName = $.trim($('#textUser').val());
+        objOTP2.vch_MobNo = $.trim($('#textmobile').val());
+        objOTP2.vch_emailID = $.trim($('#textemail').val());
+        objOTP2.code = $.trim($('#txt_code').val());
+
+
+        $.ajax({
+            url: ROOT + '/Registration/FORGROTSendOTP',
+            data: objOTP2,
+            type: "post",
+            success: function (data) {
+                var obj = JSON.stringify(data);
+                var result = JSON.parse(obj);
+                if (result.state == "success") {
+                    //  OTPTimer();
+                    GenForgotOTP("RO");
+                }
+                else {
+                    //toastr.error(data.message);
+                }
+            }
+        });
+    });
+
+    // code for saving the new user
+    $("#Submit_button").click(function () {
+        
+        if ($.login.SubmitClick() == true) {
+
+            var objOTP3 = new Object;
+            debugger;
+            objOTP3.vch_FullName = $.trim($('#textUser').val());
+            objOTP3.vch_MobNo = $.trim($('#textmobile').val());
+            objOTP3.vch_emailID = $.trim($('#textemail').val());
+            objOTP3.vch_confirmPassword = $.trim($('#textconfirmPassword').val());
+            objOTP3.vch_Password = $.trim($('#textNewPassword').val());
+            objOTP3.OTP = $.trim($('#txt_verifycode').val());
+
+            $.ajax({
+                url: ROOT+ '/Registration/SubmitNewUser',
+                data: objOTP3,
+                type: "post",
+                success: function (data) {
+                    var obj = JSON.stringify(data);
+                    var result = JSON.parse(obj);
+                    if (result.state == "success") {
+                        debugger;
+                        
+                        jAlert("xyz",'<strong>You have Successfully Registered</strong>', function (r) {
+                            if (r) {
+                                //alert(1);
+                                debugger;
+                                
+                                window.location.href = ROOT +'/Registration/Login'; 
+                                
+                                return true;
+                            }
+                            else {
+                                //alert(2);
+                                return false;
+                            }
+                        });
+                        //jAlert("You have Successfully Registered");
+                        //location.href = 'Login';
+                    }
+                    else {
+                        jAlert("SAMS", result.message);
+                    }
+                }
+            });
+
+        }
+
+    });
+    // code for saving the forgot password
+    $("#ForgotpasswordSubmit_button").click(function () {
+
+        if ($.login.ForgotSubmitClick() == true) {
+            
+            var objOTP3 = new Object;
+            objOTP3.vch_FullName = $.trim($('#textUser').val());
+            objOTP3.vch_MobNo = $.trim($('#textmobile').val());
+            objOTP3.vch_emailID = $.trim($('#textemail').val());
+            objOTP3.vch_confirmPassword = $.trim($('#textconfirmPassword').val());
+            objOTP3.vch_Password = $.trim($('#textNewPassword').val());
+            objOTP3.OTP = $.trim($('#txt_verifycode').val());
+
+            $.ajax({
+                url: ROOT+'/Registration/Submitforgotpassword',
+                data: objOTP3,
+                type: "post",
+                success: function (data) {
+                    var obj = JSON.stringify(data);
+                    var result = JSON.parse(obj);
+                    if (result.state == "success") {
+
+                        jAlert("xyz", '<strong>You have successfully changed your password.</strong>',function (r) {
+                            if (r) {
+                                //alert(1);
+                                window.location.href = 'Login';
+                                return true;
+                            }
+                            else {
+                                //alert(2);
+                                return false;
+                            }
+                        });
+                        //jAlert("You have Successfully Registered");
+                        //location.href = 'Login';
+                    }
+                    else {
+                        jAlert("SAMS", result.message);
+                    }
+                }
+            });
+
+        }
+
+    });
+});
+
+//#region event validation
+function CheckSpace(event) {
+    if (event.which == 32) {
+        event.preventDefault();
+        return false;
+    }
+}
+
+function Encryption(number) {
+    var key = CryptoJS.enc.Utf8.parse('7061737323313233');
+    var iv = CryptoJS.enc.Utf8.parse('7061737323313233');
+    var encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(number), key,
+        {
+            keySize: 128 / 8,
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+    return encrypted.toString();
+}
+
+function CheckSpaceAtFirst(event) {
+    if (event.val() == "") {
+        event.preventDefault();
+        return false;
+    }
+}
+
+// code added to check and avoid alphabet
+function CheckAlphabet(event) {
+    var x = event.which || event.keycode;
+    if ((x >= 48 && x <= 57)) {
+        return true;
+    }
+    else {
+        event.preventDefault();
+        return false;
+    }
+}
+
+function OTPTimer() {
+    $("#time").text("30 Seconds");
+    var counter = 30;
+    var interval = setInterval(function () {
+        counter--;
+        // Display 'counter' wherever you want to display it.
+        if (counter <= 0) {
+            clearInterval(interval);
+            $("#time").text("");
+            $("#Resend_button").show();
+            return;
+        } else {
+            $('#time').text(counter + " Seconds");
+            console.log("Timer --> " + counter);
+        }
+    }, 1000);
+}
+
+
+
+
+
+function isEmail(email) {
+    var EmailRegex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return EmailRegex.test(email);
+}
+
+//#endregion
+
+function CheckMobileNo(event) {
+    CheckSpace(event);
+    CheckAlphabet(event);
+}
+
+var counter;
+var count;
+function GenOTP(type) {
+    if (type = 'RO') {
+        clearInterval(counter);
+    }
+    count = 300;
+    counter = setInterval(timer, 1000); //1000 will run it every 1 second
+}
+function GenForgotOTP(type) {
+    if (type = 'RO') {
+        clearInterval(counter);
+    }
+    count = 120;
+    counter = setInterval(timer, 1000); //1000 will run it every 1 second
+}
+function timer() {
+    debugger;
+    count = count - 1;
+    if (count <= 0) {
+        clearInterval(counter);
+        //counter ended, do something here
+        $('#time').html("<span>OTP Expired!</span>");
+        $('#hdnOTP').val("0");
+        //document.getElementById("hfOTP").value = '';
+        return;
+    }
+    //Do code for showing the number of seconds here
+    const totalSeconds = count;
+
+    // 👇️ get number of full minutes
+    const minutes = Math.floor(totalSeconds / 60);
+
+    // 👇️ get remainder of seconds
+    const seconds = totalSeconds % 60;
+
+    function padTo2Digits(num) {
+        return num.toString().padStart(2, '0');
+    }
+    // format as MM:SS
+    const result = `${padTo2Digits(minutes)}:${padTo2Digits(seconds)}`;
+    //console.log(result); // 👉️ "09:25"
+    $('#time').html('<span>OTP Expires in ' + result + ' second(s)</span>');
+};
