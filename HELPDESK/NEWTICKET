@@ -1,0 +1,259 @@
+DESIGN
+-------
+@model IEnumerable<CORE_SAMSSPORTS.Model.Entities.Helpdesk.NewTicketEntity>
+@{
+    Layout = "_Layout";
+}
+
+
+
+<link href="~/css/CAFConfirm.css" rel="stylesheet" />
+<div class="dataBox confirm__details">
+    <div class="breadcrumBox">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0);"><i class="fa fa-home"></i></a></li>
+            <li class="breadcrumb-item active"> New Ticket</li>
+        </ol>
+    </div>
+    <div class="tabMenu">
+        <ul>
+            <li class="active"><a asp-controller="Helpdesk" asp-action="Newticket" class="btn btn-primary">New Ticket</a></li>
+            <li><a asp-controller="Helpdesk" asp-action="Openticket" class="btn btn-primary">Open Ticket</a></li>
+            <li><a asp-controller="Helpdesk" asp-action="Closeticket" class="btn btn-primary">Close Ticket</a></li>
+        </ul>
+    </div>
+    <div class="row align-items-center">
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    New Ticket
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-sm-2 form-group">
+                            Category
+                        </div>
+                        <div class="col-sm-10 form-group">
+                            <span class="colon">:</span>
+                            <select class="form-select" id="ddlCategory" asp-items="@(new SelectList(ViewBag.FillCategory,"intID","vchCategory"))" style="width: 400px;">
+                                <option value="0">--Select--</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2 form-group">
+                            Sub Category
+                        </div>
+                        <div class="col-sm-10 form-group">
+                            <span class="colon">:</span>
+                            <select class="form-select" id="ddlSubCategory" asp-items="@(new SelectList(string.Empty,"intID","vchCategory"))" style="width: 400px;">
+                                <option value="0">--Select--</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2 form-group">
+                            Date Of Complaint
+                        </div>
+                        <div class="col-sm-10 form-group">
+                            <span class="colon">:</span>
+                            <input type="date" ID="txtDOC" data-date-format="dd-M-yyyy" autocomplete="off" onkeypress="return false" class="form-control" style="width: 400px;">
+                        </div>
+                        <div class="col-sm-2 form-group">
+                            Error Report Details
+                        </div>
+                        <div class="col-sm-10 form-group">
+                            <span class="colon">:</span>
+
+                            <textarea id="txtErrorReport" style="height: 80px; width: 400px; font-family: Comic " name="txtErrorReport"></textarea>
+                        </div>
+                        <div class="col-sm-2 form-group">
+                            Contact No.
+                        </div>
+                        <div class="col-sm-10 form-group">
+                            <span class="colon">:</span>
+                            <input autocomplete="off" onpaste="return false;" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" class="form-control" ID="txtContactNo" onkeypress="return isNumberKey(event)" maxlength="10" style="width: 400px;">
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-2 form-group">
+                                Upload Image
+                            </div>
+                            <div class="col-sm-10 form-group">
+                                <span class="colon">:</span>
+                                <input type="file" id="fldImage" name="fldImage" class="form-control" style="width: 400px;">
+                                <label for="StudentName" style="color:#ff0000">Upload file upto 200KB/ Allow only .Pdf files</label>
+                            </div>
+
+                            <div class="clearfix">
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <div class="row forgotBox">
+                                    @*<div class="col-sm-6"><button id="btnSave" class="btn btn-primary">Submit</button></div>*@
+                                    <div class="col-sm-6">
+                                        <input type="button" id="btnSave" value="Submit" class="btn btn-primary" />
+                                        <input type="button" asp-controller="UploadeImgSig" onclick="location.href='@Url.Action("Newticket", "Helpdesk")'" id="Reset" value="Reset" class="btn btn-primary" />
+                                    </div>
+                                    <div class="col-sm-6">
+
+
+                                    </div>
+
+
+                                </div>
+                                <div class="clearfix">
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="~/js/custom.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var now = new Date();
+        var day = ("0" + now.getDate()).slice(-2);
+        var month = ("0" + (now.getMonth() + 1)).slice(-2);
+        var today = now.getFullYear() + "-" + (month) + "-" + (day);
+        $('#txtDOC').val(today);
+
+        $('#fldImage').change(function () {
+
+            if (!CheckFileTypeSize('fldImage', 5, 200, '200KB')) {
+                return false;
+            }
+        });
+
+
+    });
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
+    $("#ddlCategory").change(function () {
+           // $('#' + ddlSubCategory + ' option').each(function (j, option) { $(option).remove(); });
+            debugger;
+            var userid = $("#ddlCategory").val();
+            $.ajax({
+                url: '@Url.Action("CascadingOfSubCategory", "Helpdesk")',
+                async: false,
+                type: 'POST',
+                data: { "intID": userid },
+                success: function (data) {
+                    debugger;
+                    var obj = data['D'];
+
+                    $("#ddlSubCategory").empty();
+                    $("#ddlSubCategory").append("<option value='0'>--Select--</option>")
+                    var print = "print";
+                    var htm = '';
+                    debugger;
+                    for (var i = 0; i < obj.length; i++) {
+
+                        $("#ddlSubCategory").append("<option value='" + obj[i].intID + "'>" + obj[i].vchSubCategory + "</option>")
+                        debugger;
+                    }
+                },
+                error: function (jqXHR) {
+
+                },
+                complete: function (jqXHR, status) {
+
+                }
+            });
+
+
+
+    });
+    $("#btnSave").click(function () {
+
+        debugger;
+        if (!ValidateDropdown('ddlCategory', 'Category')) {
+            return false;
+        }
+        if (!ValidateDropdown('ddlSubCategory', 'Sub Category')) {
+            return false;
+        }
+
+        if (!BlankTextBox('txtDOC', 'Date Of Complaint')) {
+            return false;
+        };
+        if (!BlankTextBox('txtErrorReport', 'Error Report Details')) {
+            return false;
+        };
+        if (!BlankTextBox('txtContactNo', 'Contact No')) {
+            return false;
+        };
+        if (!MobileNumber('txtContactNo', 'Contact No')) {
+            return false;
+        };
+        debugger;
+        Submitcomplain();
+
+    });
+    function Submitcomplain() {
+        debugger;
+        var linkDetails = new Array();
+        var formData = new FormData();
+        var objsubmit = {};
+        objsubmit.vchCategory = $.trim($('#ddlCategory').val());
+        objsubmit.vchSubCategory = $.trim($('#ddlSubCategory').val());
+        objsubmit.dtmComplaintDate = $.trim($('#txtDOC').val());
+        objsubmit.vchDesc = $.trim($('#txtErrorReport').val());
+        objsubmit.vchContactNo = $.trim($('#txtContactNo').val());
+        objsubmit.vchSubject = ($('#ddlCategory option:selected').text()) + "-" + ($('#ddlSubCategory option:selected').text());
+        linkDetails.push(objsubmit)
+        formData.append("Elements", JSON.stringify(linkDetails));
+        formData.append('file', $('#fldImage')[0].files[0]);
+
+            $.ajax({
+                url: '@Url.Action("NewticketSubmit", "Helpdesk")',
+                async: false,
+                data: formData,
+                type: "post",
+                processData: false,  // tell jQuery not to process the data
+                contentType: false,  // tell jQuery not to set contentType
+                success: function (data) {
+                    var obj = JSON.stringify(data);
+                    var result = JSON.parse(obj);
+                    if (result.state == "success") {
+                        debugger;
+                        
+                        jAlert("xyz", result.message, function (r) {
+                            
+                            if (r) {
+
+                                window.location.href = 'Newticket';
+                                return true;
+                            }
+                            else {
+
+                                return false;
+                            }
+                        });
+                        
+                    }
+                    else {
+                        jAlert(result.message);
+                    }
+                }
+            });
+
+
+
+    }
+</script>
+
+
+
