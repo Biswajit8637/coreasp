@@ -1,0 +1,379 @@
+
+@{
+    Layout = "_Layout";
+}
+<script src="~/js/custom.js"></script>
+<div class="dataBox confirm__details">
+    <div class="breadcrumBox">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0);"><i class="fa fa-home"></i></a></li>
+            <li class="breadcrumb-item active">View Ticket details</li>
+        </ol>
+    </div>
+    <div class="row align-items-center">
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    View Ticket details
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        @foreach (var item in ViewBag.listvtick)
+                        {
+
+
+                            <div class="col-sm-12 col-xs-12 panel-heading" style="background: #1abc9c; color: #fff;
+                                    height: 30px; font-weight: bold; font">
+                                User Details
+                            </div>
+                            <div class="col-sm-2 form-group">
+                                User Name
+                            </div>
+                            <div class="col-sm-10 form-group">
+                                <span class="colon">:</span>
+                                <Label ID="lblOpenedBy">@item.vch_CollegeName</Label>
+                            </div>
+                            <div class="col-sm-12 col-xs-12 panel-heading" style="background: #1abc9c; color: #fff;
+                                    height: 30px; font-weight: bold;">
+                                Details
+                            </div>
+                            <div class="col-sm-2 form-group">
+                                Subject
+                            </div>
+                            <div class="col-sm-10 form-group">
+                                <span class="colon">:</span>
+                                <Label ID="lblSubject">@item.vchSubject</Label>
+                            </div>
+                            <div class="col-sm-2 form-group">
+                                Sub-Category
+                            </div>
+                            <div class="col-sm-10 form-group">
+                                <span class="colon">:</span>
+                                <Label ID="lblCategory"> @item.vchSubCategory</Label>
+                            </div>
+                            <div class="col-sm-2 form-group">
+                                Complaint No
+                            </div>
+                            <div class="col-sm-10 form-group">
+                                <span class="colon">:</span>
+                                <Label ID="lblComplaintNo">@item.vchComplaintNo</Label>
+                            </div>
+                            @*<div class="col-sm-2 form-group">
+                                    Registered Mobile No
+                                </div>
+                                <div class="col-sm-10 form-group">
+                                    <span class="colon">:</span>
+                                    <Label ID="lblRegMobNo">@item.vchContactNo</Label>
+                                </div>*@
+                            <div class="col-sm-2 form-group">
+                                Date Of Complaint
+                            </div>
+                            <div class="col-sm-10 form-group">
+                                <span class="colon">:</span>
+                                <Label ID="lblCompDate">@item.dtmComplaintDate</Label>
+                            </div>
+                            <div class="col-sm-2 form-group">
+                                Status
+                            </div>
+                            <div class="col-sm-10 form-group">
+                                <span class="colon">:</span>
+                                <Label ID="lblStatus">@item.vchSubject</Label>
+                            </div>
+                            <div class="col-sm-2 form-group">
+                                Response Days
+                            </div>
+                            <div class="col-sm-10 form-group">
+                                <span class="colon">:</span>
+                                <Label ID="lblTime">@item.duration</Label>
+                            </div>
+                            <div class="col-sm-2 form-group">
+                                Document(s)
+                            </div>
+                            <div class="col-sm-10 form-group">
+                                <span class="colon">:</span>
+                                <a ID="hldocUpload"  target="_blank" href="/Helpdesk/BindPdf?clsid=2&id=@item.vchFileName">
+                                    <img src="~/img/download.png" />
+                                </a>
+
+                            </div>
+
+                            <div class="col-sm-2 form-group">
+                                Description
+                            </div>
+                            <div class="col-sm-10 form-group">
+                                <span class="colon">:</span>
+                                <textarea id="txtDesc" style="height: 80px; width: 400px; font-family: Comic " name="txtErrorReport">@item.vchCloseRemark</textarea>
+                            </div>
+                            
+                                
+                        }
+                        <div class="form-group row">
+
+
+                            <div class="clearfix">
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <div class="row forgotBox">
+                                    <div class="col-sm-6">
+                                        <input type="button" id="OpenTicket" value="OpenTicket" class="btn btn-primary" />
+                                        <input type="button" onclick="location.href='@Url.Action("Openticket", "Helpdesk")'" id="Cancel" value="Cancel" class="btn btn-primary" />
+                                        <input type="hidden" id="Id" />
+                                        <input type="hidden" id="Type" />
+                                    </div>
+
+
+                                </div>
+                                <div class="clearfix">
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table  table-bordered ">
+                                <thead>
+                                    <tr class="table-secondary">
+
+                                        <th>
+                                            User Name
+                                        </th>
+
+                                        <th>Remark</th>
+                                        <th>
+                                            Status
+                                        </th>
+                                        <th>Action Date</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody id="openticket">
+                                    @foreach (var HistoryList in ViewBag.HistoryList)
+                                    {
+                                        <tr>
+                                            <td>@HistoryList.UserName</td>
+                                            <td>@HistoryList.vchRemark</td>
+                                            <td>@HistoryList.StrStatus</td>
+                                            <td>@HistoryList.dtmCreatedOn</td>
+                                        </tr>
+
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <script type="text/javascript">
+    $(document).ready(function () {
+        var id = GetParameterValues('Id');
+        var Type = GetParameterValues('Type');
+        if (Type == "A") {
+            debugger;
+            $('#OpenTicket').hide();
+        }
+        $('#Id').val(id);
+        $('#Type').val(Type);
+
+
+        function GetParameterValues(param) {
+            var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for (var i = 0; i < url.length; i++) {
+                var urlparam = url[i].split('=');
+                if (urlparam[0] == param) {
+                    return urlparam[1];
+                }
+            }
+        }
+
+    });
+
+    $("#OpenTicket").click(function () {
+        debugger;
+        if (!blankFieldValidation('txtDesc', 'Description'))
+            return false;
+        //if (!ConfirmActionopen('btnSubmit', 'Are you sure want to Close Ticket ?', 'Are you sure want to Open Ticket ?')) {
+        //    return false;
+        //}
+        function ConfirmActionopen(cntr, msgAdd, msgUpdate) {
+            var msg;
+            if ($('#' + cntr).val() == 'Close Ticket')
+                msg = msgAdd;
+            else
+                msg = msgUpdate;
+            jConfirm("", msg,);
+
+        }
+        debugger;
+
+        var objid = $('#Id').val();
+        var objtype = $('#Type').val();
+
+
+
+        $.ajax({
+            url: '@Url.Action("ButtonSave", "Helpdesk")',
+            data: { "type": objtype, "id": objid },
+            type: "post",
+            dataType: "json",
+
+                success: function (data) {
+                    var obj = JSON.stringify(data);
+                    var result = JSON.parse(obj);
+                    if (result.state == "success") {
+                        debugger;
+
+                        jAlert("xyz", result.message, function (r) {
+
+                            if (r) {
+
+                                window.location.href = 'Openticket';
+                                return true;
+                            }
+                            else {
+
+                                return false;
+                            }
+                        });
+
+                    }
+                    else {
+                        jAlert(result.message);
+                    }
+                }
+            });
+    });
+
+
+    @*function OpenTicket() {
+        debugger;
+
+        var objsubmit = new Object();
+        if ($('#txtFromDate').val() != "") {
+            debugger;
+            objsubmit.dtmFromdate = $.trim($('#txtFromDate').val());
+        }
+        else {
+            objsubmit.dtmFromdate = "2000-05-08 14:40:52";
+        }
+        if ($('#txtToDate').val() != "") {
+            debugger;
+            objsubmit.dtmTodate = $.trim($('#txtToDate').val());
+        }
+        else {
+            objsubmit.dtmTodate = "2060-05-08 14:40:52";
+        }
+
+            $.ajax({
+                url: '@Url.Action("GetTicketDetails", "Helpdesk")',
+                data: objsubmit,
+                type: "post",
+                async: false,
+                success: function (data) {
+                    debugger;
+                    var obj = data['OpenCloseTicket'];
+                    var listvtickdetails = data['listvtickdetails'];
+                    debugger;
+                    if (listvtickdetails != null) {
+                        if (listvtickdetails[0].vchSubject != null) {
+                            $('#lblSubject').text(listvtickdetails[0].vchSubject);
+
+
+                        }
+                        else {
+                            $('#lblSubject').text('NA');
+                        }
+                        if (listvtickdetails[0].vchSubCategory != null) {
+                            $('#lblCategory').text(listvtickdetails[0].vchSubCategory);
+
+
+                        } else {
+                            $('#lblCategory').text('NA');
+                        }
+                        if (listvtickdetails[0].vch_CollegeName != null) {
+                            $('#lblOpenedBy').text(listvtickdetails[0].vch_CollegeName);
+
+
+                        } else {
+                            $('#lblOpenedBy').text('NA');
+                        }
+                        if (listvtickdetails[0].duration != null) {
+                            $('#lblTime').text(listvtickdetails[0].duration);
+
+
+                        } else {
+                            $('#lblTime').text('NA');
+                        }
+                        if (listvtickdetails[0].vchCloseRemark != null) {
+
+
+                            var strCloseRemark = listvtickdetails[0].vchCloseRemark;
+
+
+                        } else {
+                            var strCloseRemark = "NA";
+                        }
+                        if (listvtickdetails[0].vchComplaintNo != null) {
+                            $('#lblComplaintNo').text(listvtickdetails[0].vchComplaintNo);
+
+
+                        } else {
+                            $('#lblComplaintNo').text('NA');
+                        }
+                        if (listvtickdetails[0].vchContactNo != null) {
+                            $('#lblRegMobNo').text(listvtickdetails[0].vchContactNo);
+
+
+                        } else {
+                            $('#lblRegMobNo').text('NA');
+                        }
+                        if (listvtickdetails[0].dtmComplaintDate != null) {
+                            $('#lblCompDate').text(listvtickdetails[0].dtmComplaintDate);
+
+
+                        } else {
+                            $('#lblCompDate').text('NA');
+                        }
+                        if (listvtickdetails[0].dtmCreatedOn != null) {
+                            var dtmOpen = listvtickdetails[0].dtmCreatedOn;
+
+
+                        } else {
+                            var strFile = listvtickdetails[0].vchFileName;
+                        }
+                        $('#txtDesc').text(strCloseRemark);
+                    }
+
+
+                    if (obj != null) {
+                        //$('#tblDatatable').DataTable().destroy();
+                        var print = "print";
+                        var htm = '';
+                        for (var i = 0; i < obj.length; i++) {
+                            var K = 1;
+                            K = K + i;
+                            htm += '<tr><td>' + K + '</td><td>' + obj[i].vchComplaintNo + '</td><td>' + obj[i].vchContactNo + '</td><td><a href="/Helpdesk/TicketViewDetailsSports?Id='+ obj[i].intTicketID +'&SType='+obj[i].intStudType +'&Type=A">'+ obj[i].vchSubject +' </a></td><td>' + obj[i].vchCategory + '</td><td>' + obj[i].vchSubCategory + '</td><td>' + obj[i].vchDesc + '</td><td>' + obj[i].vch_CollegeName + '</td><td>' + obj[i].dtmCreatedOn +  '</td>< </tr>';
+
+                        }
+
+                        $('#openticket').append(htm); //Datatabel tbody append
+
+                    }
+                }
+            });
+
+
+
+    }*@
+
+
+
+    </script>
