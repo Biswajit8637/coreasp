@@ -1,0 +1,34 @@
+public class CommonPhoto
+    {
+        public static string GetPhoto(string imgid,string clsid)
+        {
+            var pth = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("AppSetting")["StrPathView"];
+
+            if (clsid == "1")
+            {
+                //pth = pth + "SAMS\\ONLINE_CAF\\APPL_IMAGES/";
+                pth = pth + "IMAGES22/";
+
+            }
+            else
+            {
+                //pth = pth + "SAMS\\ONLINE_CAF_DEG\\APPL_IMAGES/";
+                pth = pth + "Signature22/";
+            }
+
+
+
+            string imgDataURL = null;
+            string fullpath = pth + imgid;
+            if (File.Exists(fullpath))
+            {
+                var byteData = System.IO.File.ReadAllBytes(fullpath);
+                string imreBase64Data = Convert.ToBase64String(byteData);
+                 imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+            }
+            
+
+            return imgDataURL;
+        }
+       
+    }
