@@ -1,0 +1,149 @@
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link href="~/css/custom.css" rel="stylesheet" />
+    <title>Intimation Letter</title>
+    <link href="~/css/intimation.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-1.4.1.min.js" integrity="sha256-LOx49zn73f7YUs15NNJTDnzEyPFLOGc7A7pfuICtTMc=" crossorigin="anonymous"></script>
+    <link href="~/css/jQuery.alert.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="~/img/favicon.ico">
+    <script src="~/js/jQuery.alert.js"></script>
+    <script src="~/js/jquery-3.6.1.min.js"></script>
+    <script src="~/js/SPORTS/Intimationletters.js"></script>
+</head>
+<body>
+    
+    <form id="form1" >
+        <div class="wrapper" style="border-style: double;">
+            <table width="1000" cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto;">
+                <tr>
+                    <td width="100%">
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                            <tr>
+                                @*<td width="100px"><img src="../img/govt.png" /></td>*@
+                                <td>
+                                    <h1 class="logo-head">Intimation Letter </h1>
+                                    <p class="logo-txt">For Admission to Government College of Physical Education,Odisha, Bhubaneswar</p>
+                                    <h2 class="logo-head-txt">
+                                        Department of Sports & Youth Services <br />
+                                        Government of Odisha, Bhubaneswar
+                                    </h2>
+                                </td>
+                                <td width="150" align="center">
+                                 
+                                    <center class="user-bg" style="padding-left:20px;"> <img id="imgPhoto" width="120"  src="~/img/noimage.JPG" /> </center>
+                                    @*<center class="NOPRINT">
+                                        <a onclick="window.print();return false;" data-toggle="tooltip" title="Click here to take a print" style="cursor: pointer;"><img src="~/img/print.png" /></a>
+                                    </center>*@
+
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr style="padding:5px">
+                    <td width="100%">
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                            <tr>
+                                <td><strong>To,</strong></td>
+                            </tr>
+                            <tr>
+                                <td> <strong> <Label ID="lblName"  Text=""></Label> </strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Course:</strong> <asp:Label ID="lblCourse3"  Text=""></asp:Label></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Application No:</strong> <Label ID="lblRefNo" Text=""></Label></td>
+                            </tr>
+                            <tr>
+
+
+                                <td>
+                                    You have been provisionally selected <asp:Label ID="lblwlst"  Text=""></asp:Label>
+                                    for admission into <asp:Label ID="lblCourse2"  Text=""></asp:Label> Course 2022-24. You should get yourself for admission
+                                    on <asp:Label ID="lbldate"  Text=""></asp:Label> from
+                                    <asp:Label ID="lbltime"  Text=""></asp:Label> failing which, your seat will be forfeited.
+                                    No extension of time will be allowed.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="10px"></td>
+                            </tr>
+
+                            <tr>
+                                <td><h2>Confirmed Information</h2></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table class="table table-bordered" width="100%" style="margin:0 auto;">
+                                        <tr>
+                                            <th>College Name</th>
+                                            <th>Course</th>
+                                            <th id="thstatus" >Applicant Status</th>
+                                        </tr>
+
+                                        <tr>
+                                            <td align="center"> <asp:Label ID="lblCollege"  Text=""></asp:Label></td>
+                                            <td align="center"> <asp:Label ID="lblCourse"  Text=""></asp:Label></td>
+                                            <td id="tdstatus"  align="center"> <asp:Label ID="lblStatus"  Text=""></asp:Label></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Admission Venue – Central Admission Venue, Kalinga Stadium,  Bhubaneswar,  Skywalk-3, Conference Hall.</b></td>
+                            </tr>
+                            <tr>
+                                <td><asp:Label ID="lblnb" ></asp:Label></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ul>
+                                        <li id="liMPEd" ><asp:label ID="lblMPEd" ></asp:label></li>
+                                        <li>Admission fee B.P.Ed -32,750/-, M.P.Ed- 33,040/- in shape of B.D. in favour of principal of respective college.</li>
+                                        <li>Migration Certificate in case of other University candidate.</li>
+                                        <li>Produce affidavit towards genuineness of documents.</li>
+                                        <li>Produce relieve order & no objection certificate in case of in-service candidates from competent authority.</li>
+                                        <li>Produce counter signed certificate from respective sports hostels in-charges in case of sports hostel students.</li>
+                                        <li>2 Nos of Colour passport size photograph of local guardian and residence proof required at the time of admission.</li>
+                                    </ul>
+                                    <asp:Label ID="lbl6" > &nbsp; NB: Classes will commence from 25th November 2022.</asp:Label></br></br>
+
+                                    <asp:Label ID="Label1" > All Candidates should strictly follow COVID-19 guidelines issued by Government. </asp:Label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="100%">
+                                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                        <tr>
+                                            <td width="60%"></td>
+                                            <td>
+                                                <center>
+                                                    <p><strong>Principal</strong> </p>
+                                                    <p><strong><asp:Label ID="lblClgPrinciple"  Text=""></asp:Label></strong></p>
+                                                </center>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <table width="1200" cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto;">
+            <tr>
+                <td align="center">For any clarification call Toll Free No.: 155335 or 1800-345-6770</td>
+            </tr>
+        </table>
+    </form>
+</body>
+
+</html>
