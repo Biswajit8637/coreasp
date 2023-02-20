@@ -1,0 +1,61 @@
+DataLoad();
+        $("#fldImage").change(function () {
+
+            if (!CheckFileTypeSize('fldImage', 2, 250, '250KB')) {
+
+                return false;
+            }
+            else
+                ReadURL(this);
+        });
+        $("#fldSignature").change(function () {
+
+
+            if (!CheckFileTypeSize('fldSignature', 2, 80, '80KB')) {
+                return false;
+            }
+            else
+                ReadURL1(this);
+        });
+        -------------------------------------------------------------------------------------
+            $("#btnSave").click(function () {
+       
+        if ($('#btnSave').val() == 'Save') {
+           
+            if (!ValidateFile('fldImage', 'Photo')) {
+                return false;
+            }
+            if (!ValidateFile('fldSignature', 'Signature')) {
+                return false;
+            }
+
+            //if (!ConfirmAction('btnSave', 'Are you sure want to submit ?', 'Are you sure want to update ?')) {
+            //    return false;
+            //}
+        }
+        if ($('#btnSave').val() == 'Update') {
+
+            if ($('#fldImage').get(0).files.length == "0" && $('#fldSignature').get(0).files.length == "0") {
+                //jAlert('', '<strong>Select File(s) to Update</strong>');
+                swal("", "Select File(s) to Update", "warning")
+                    .then(function () {
+                        $('#' + cntr).focus();
+                    });
+                return false;
+            }
+            if (!ValidateFile('fldImage', 'Photo')) {
+                return false;
+            }
+            if (!ValidateFile('fldSignature', 'Signature')) {
+                return false;
+            }
+            //if (!ConfirmAction('btnSave', 'Are you sure want to submit ?', 'Are you sure want to update ?')) {
+            //    return false;
+            //}
+        }
+
+
+        ShowImg();
+        SaveImg();
+    });
+===============================================================================================================================================================
