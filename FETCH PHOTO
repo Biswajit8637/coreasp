@@ -59,3 +59,5 @@ DataLoad();
         SaveImg();
     });
 ===============================================================================================================================================================
+byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                    return File(fileBytes, contentType);--->FOR PDF BIND IN 
