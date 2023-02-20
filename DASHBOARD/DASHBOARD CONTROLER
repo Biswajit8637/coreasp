@@ -1,0 +1,283 @@
+using CORE_SAMSSPORTS.Core;
+using CORE_SAMSSPORTS.Model.Entities.Dashboard;
+using CORE_SAMSSPORTS.Model.Entities.IndexCard;
+using CORE_SAMSSPORTS.Repository.Repositories.Interfaces;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Security.Cryptography;
+using System.Text;
+using Microsoft.VisualBasic;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using System.Drawing.Imaging;
+using CORE_SAMSSPORTS.Model.Entities.Intimation;
+using CORE_SAMSSPORTS.Repository.Repositories;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
+using Microsoft.AspNetCore.Authorization;
+using CORE_SAMSSPORTS.Core.Security;
+using SAMSOnlineUSM.Core;
+
+namespace CORE_SAMSSPORTS.Web.Controllers
+{
+    public class StudentDashboardController : Controller
+    {
+
+        private readonly IDashboardRepository _DashboardRepository;
+        private readonly IindexCardRepository _indexCardRepository;
+        private readonly IintimationLetterRepository _intimationLetterRepository;
+        string Barcodetxt = "";
+        string image = "";
+        string Signature = "";
+        public StudentDashboardController(IDashboardRepository dashboard, IindexCardRepository IndexCard, IintimationLetterRepository IintimationLetter)
+        {
+            _DashboardRepository = dashboard;
+            _indexCardRepository = IndexCard;
+            _intimationLetterRepository = IintimationLetter;
+        }
+
+        #region DASHBAORD
+
+        public async Task<IActionResult> StudentDashbaord()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Registration");
+            }
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> StudentDashbaorddata()
+
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var identity = User.Identity as ClaimsIdentity;
+                    if (identity != null)
+                    {
+                        string intRoleId = Convert.ToString(HttpContext.User.FindFirstValue(ClaimTypes.GivenName));
+                        SportsDashboard objviewancmnt = new SportsDashboard();
+                        objviewancmnt.Action = "V";
+                        List<SportsDashboard> keydatelines = new List<SportsDashboard>();
+                        List<SportsDashboard> viewannuce = new List<SportsDashboard>();
+                        viewannuce = _DashboardRepository.viewAnnouncement(objviewancmnt);
+                        keydatelines = _DashboardRepository.ViewKeyDateLines(objviewancmnt);
+
+                        return Json(new { keydatelines = keydatelines, viewannuce = viewannuce });//return data through json 
+                    }
+                    else
+                    {
+                        return Json(new { state = ResultType.error.ToString(), message = "INVALID USERID" });
+                    }
+                }
+                else
+                {
+                    return Json(new { state = ResultType.error.ToString(), message = "INVALID USERID" });
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
+
+        #region INDEXCARD PRINT
+        public async Task<IActionResult> indexcard()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Registration");
+            }
+            
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> indexcardA()//return data through json added by biswajit panda
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var identity = User.Identity as ClaimsIdentity;
+                    if (identity != null)
+                    {
+                        EIndexCard objviewancmnt = new EIndexCard();
+                        objviewancmnt.charAction = 'I';
+                        objviewancmnt.intUserId = Convert.ToInt32(HttpContext.User.FindFirstValue(ClaimTypes.Sid));
+                        //objviewancmnt.intUserId = 2000;
+                        List<EIndexCard> indexcard = new List<EIndexCard>();
+
+                        indexcard = _indexCardRepository.viewindexDetails(objviewancmnt);
+
+                        if (indexcard.Count > 0)
+                        {
+                            string key = "S#a!m(S&_)7A!pPG";
+                            if (indexcard[0].vchImageName == "" || indexcard[0].vchSignatureName == "")
+                            {
+
+
+                                return Json(new { state = ResultType.error.ToString(), message = "Please upload Image/Signature!!" });
+                            }
+                            else
+                            {
+                                Barcodetxt = indexcard[0].vchApplicationNo.ToString();
+                                string EncImageid = EncrytDecry.Encrypt(indexcard[0].vchImageName.ToString(), key);
+                                string EncImageclsid = EncrytDecry.Encrypt(1.ToString(), key);
+                                string drcImageid = EncrytDecry.Decrypt(EncImageid, key);
+                                string drcImageclsid = EncrytDecry.Decrypt(EncImageclsid, key);
+                                image = CommonPhoto.GetPhoto(drcImageid, drcImageclsid);
+                                string EncSignature = EncrytDecry.Encrypt(indexcard[0].vchSignatureName.ToString(), key);
+                                string EncSignclsid = EncrytDecry.Encrypt(2.ToString(), key);
+                                string drcSignature = EncrytDecry.Decrypt(EncSignature, key);
+                                string drcSignclsid = EncrytDecry.Decrypt(EncSignclsid, key);
+                                Signature = CommonPhoto.GetPhoto(drcSignature, drcSignclsid);
+                            }
+                        }
+                        else
+                        {
+
+                            return Json(new { state = ResultType.error.ToString(), message = "You are not eligible to print Index Card  !" });
+                        }
+
+
+                        string barcode = Barcode.CreateBarcode(Barcodetxt);
+                        return Json(new { indexcard = indexcard, barcode = barcode, image = image, Signature = Signature });
+                    }
+                    else
+                    {
+                        return Json(new { state = ResultType.error.ToString(), message = "INVALID USERID  !" });
+                    }
+                }
+                else
+                {
+                    return Json(new { state = ResultType.error.ToString(), message = "INVALID USERID  !" });
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region INTIMATION LETTER
+        public async Task<IActionResult> intimationletter()//The action of intimationletter (its only return view)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Registration");
+            }
+            
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> IntimationletterA()//return data through json
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var identity = User.Identity as ClaimsIdentity;
+                    if (identity != null)
+                    {
+
+                        intimationletter objviewancmnt = new intimationletter();
+                        objviewancmnt.charAction = "K";
+                        objviewancmnt.intUserId = Convert.ToInt32(HttpContext.User.FindFirstValue(ClaimTypes.Sid)); ;
+                        List<intimationletter> intimation = new List<intimationletter>();
+
+                        intimation = _intimationLetterRepository.viewMeritList(objviewancmnt);
+                        if (intimation[0].ListID != 3)
+                        {
+                            if (intimation[0].ImageName == "")
+                            {
+                                return Json(new { state = ResultType.error.ToString(), message = "Please upload Image/Signature!!" });
+                            }
+                            else
+                            {
+                                string key = "S#a!m(S&_)7A!pPG";
+                                string EncImageid = EncrytDecry.Encrypt(intimation[0].ImageName.ToString(), key);
+                                string EncImageclsid = EncrytDecry.Encrypt(1.ToString(), key);
+                                string drcImageid = EncrytDecry.Decrypt(EncImageid, key);
+                                string drcImageclsid = EncrytDecry.Decrypt(EncImageclsid, key);
+                                image = CommonPhoto.GetPhoto(drcImageid, drcImageclsid);
+                            }
+                        }
+                        else
+                        {
+                            return Json(new { state = ResultType.error.ToString(), message = "You are not eligible to print Intimation Letter ! !" });
+                        }
+
+
+
+
+                        return Json(new { intimation = intimation, image = image });
+
+                    }
+                    else
+                    {
+                        return Json(new { state = ResultType.error.ToString(), message = "INVALID USERID ! !" });
+                    }
+                }
+                else
+                {
+                    return Json(new { state = ResultType.error.ToString(), message = "INVALID USERID! !" });
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> binddatetime()
+        {
+            try
+            {
+                intimationletter objviewancmnt = new intimationletter();
+                objviewancmnt.charAction = "L";
+
+                objviewancmnt.intUserId = 2000;
+                List<intimationletter> intimationDATE = new List<intimationletter>();
+
+                intimationDATE = _intimationLetterRepository.viewMeritList(objviewancmnt);
+
+
+
+                return Json(new { intimationDATE = intimationDATE });
+            }
+
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
+
+    }
+}
