@@ -147,3 +147,138 @@
 </body>
 
 </html>
+
+--------------------------------------------------------------------
+
+
+$(document).ready(function () {
+    
+    $.ajax({
+        data: {},
+       
+        url: encodeURI("../StudentDashboard/intimationletterA"), 
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            
+            var obj = JSON.stringify(data);
+            var result = JSON.parse(obj);
+            var obj = data['intimation'];
+            var image = data['image']        
+            if (obj != null) {
+                $('#imgPhoto').attr('src', image);
+                $('#lblName').text(obj[0].ApplicantName);
+                $('#lblRefNo').text(obj[0].ApplicationNo);
+                $('#lblCourse2').text(obj[0].Course);
+                $('#lblCollege').text(obj[0].CollegeName);
+                $('#lblCourse').text(obj[0].Course);
+                var lblMPEd = obj[0].Course == "B.P.Ed." ? "Original Matric/HSC Certificate, +2/Intermediate Certificate, " +
+                        "+3/Degree Certificate, Sports Certificates, Caste Certificate,Resident Certificate,Conduct Certificate," +
+                        "& CLC ." :
+                        "Original Matric/HSC Certificate, +2/Intermediate Certificate," +
+                        " +3/Degree Certificate, B.P.Ed. Certificate, Sports Certificates, Caste Certificate,Resident Certificate,Conduct Certificate," +
+                        "& CLC .";
+                    $('#lblMPEd').text(lblMPEd);
+                if (obj[0].CollegeID == 459) {
+                        var lablea = "You must bring with you the following:";
+                        $('#lblnb').text(lablea);
+                        $("#lbl6").show();
+
+                    }
+                else if (obj[0].CollegeID == 460) {
+                        var lableb = "You must bring with you the following:";
+                        $('#lblnb').text(lableb);
+                        $("#lbl6").hide();
+
+                    }
+                    var lblClgPrinciple = "Government College of Physical Education, Bhubaneswar";
+                    $('#lblClgPrinciple').text(lblClgPrinciple);
+
+                if (obj[0].ListID == 1) {
+                        $("#thstatus").hide();
+                        $("#lblStatus").hide();
+                        $("#tdstatus").hide();
+                        $("#lblwlst").hide();
+                    }
+                else if (obj[0].ListID == 2) {
+                        var lablea = "Waiting List";
+                        $('#lblStatus').text(lablea);
+                        var lableb = "as waitlisted candidate";
+                        $('#lblwlst').text(lableb);
+                    }
+
+            }
+            else
+            {
+              
+                if (result.state == "error") {
+
+                    jAlert("xyz", result.message,  function (r) {
+                        if (r) {
+
+                            window.location.href = 'StudentDashbaord';
+                            return true;
+                        }
+                        else {
+
+                            return false;
+                        }
+                    });
+
+                }
+                else {
+                    jAlert("xyz", result.message);
+                }
+            }
+        },
+    });
+
+
+    $.ajax({
+        data: {},
+        url: encodeURI("../StudentDashboard/binddatetime"), 
+        
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+
+            var objdate = data['intimationDATE'];
+            if (objdate != null) {
+                //$('#tblDatatable').DataTable().destroy();
+                var print = "print";
+                var htm = '';
+                
+                $('#lblCourse2').text(objdate[0].Course);
+                $('#lblCourse3').text(objdate[0].Course);
+                $('#lbldate').text(objdate[0].Admissiondate);
+                $('#lbltime').text(objdate[0].Admissiontime);
+                if (objdate[0].listID == 2) {
+
+                    $('#lbldate').text(objdate[0].Admissiondate);
+                    $('#lbltime').text(objdate[0].Admissiontime);
+                }
+            }
+            else
+            {
+                if (result.state == "error") {
+
+                    jAlert("xyz", result.message, function (r) {
+                        if (r) {
+
+                            window.location.href = 'StudentDashbaord';
+                            return true;
+                        }
+                        else {
+
+                            return false;
+                        }
+                    });
+
+                }
+                else {
+                    jAlert("xyz", result.message);
+                }
+            }
+        },
+    });
+});
