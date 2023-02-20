@@ -1,0 +1,44 @@
+using CORE_SAMSSPORTS.Model.Entities.Dashboard;
+using CORE_SAMSSPORTS.Model.Entities.Intimation;
+using CORE_SAMSSPORTS.Repository.Repositories.Interfaces;
+using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CORE_SAMSSPORTS.Repository.Repositories
+{
+    public class intimationLetterRepository: RepositoryBase, IintimationLetterRepository
+    {
+        public intimationLetterRepository(IConnectionFactory connectionFactory) : base(connectionFactory)
+        {
+
+        }
+
+        public List<intimationletter> viewMeritList(intimationletter objlist)
+        {
+
+
+            try
+            {
+                List<intimationletter> ilster = new List<intimationletter>();
+                var queryParameters = new DynamicParameters();
+
+                queryParameters.Add("@P_chrAction", objlist.charAction);
+                queryParameters.Add("@P_intBoyGirl", objlist.intUserId);
+
+                ilster = Connection.Query<intimationletter>("USP_Sports_ViewMeritList", queryParameters, commandType: CommandType.StoredProcedure).ToList();
+
+                return ilster;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+    }
+}
