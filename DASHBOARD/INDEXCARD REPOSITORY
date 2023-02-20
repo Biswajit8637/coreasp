@@ -1,0 +1,38 @@
+using CORE_SAMSSPORTS.Model.Entities.IndexCard;
+using CORE_SAMSSPORTS.Repository.Repositories.Interfaces;
+using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CORE_SAMSSPORTS.Repository.Repositories
+{
+    public class indexCardRepository: RepositoryBase, IindexCardRepository
+    {
+        public indexCardRepository(IConnectionFactory connectionFactory) : base(connectionFactory)
+        {
+
+        }
+
+        public List<EIndexCard> viewindexDetails(EIndexCard objStu)
+        {
+            try
+            {
+                List<EIndexCard> indxcard = new List<EIndexCard>();
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@P_charAction", objStu.charAction);
+                queryParameters.Add("@P_intuserId", objStu.intUserId);
+                indxcard = Connection.Query<EIndexCard>("USP_Sports_ViewCAFDATA", queryParameters, commandType: CommandType.StoredProcedure).ToList();
+
+                return indxcard;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+    }
+}
