@@ -1,0 +1,63 @@
+using CORE_SAMSSPORTS.Core;
+using CORE_SAMSSPORTS.Model.Entities.Dashboard;
+using CORE_SAMSSPORTS.Repository.Repositories.Interfaces;
+using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CORE_SAMSSPORTS.Repository.Repositories
+{
+    public class DashboardRepository: RepositoryBase, IDashboardRepository
+    {
+        public DashboardRepository(IConnectionFactory connectionFactory) : base(connectionFactory)
+        {
+
+        }
+
+        public List<SportsDashboard> viewAnnouncement(SportsDashboard objAnn)
+        {
+
+
+            try
+            {
+                
+                List<SportsDashboard> ilster = new List<SportsDashboard>();
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@Action", objAnn.Action);
+
+                ilster = Connection.Query<SportsDashboard>("USP_Announcement", queryParameters, commandType: CommandType.StoredProcedure).ToList();
+
+                return ilster;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public List<SportsDashboard> ViewKeyDateLines(SportsDashboard objAnn)
+        {
+
+
+            try
+            {
+                List<SportsDashboard> ilster = new List<SportsDashboard>();
+                var queryParameters = new DynamicParameters();
+                queryParameters.Add("@P_Action", objAnn.Action);
+
+                ilster = Connection.Query<SportsDashboard>("USP_KEYDateLinesDetails", queryParameters, commandType: CommandType.StoredProcedure).ToList();
+
+                return ilster;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+    }
+}
