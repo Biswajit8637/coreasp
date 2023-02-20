@@ -1,0 +1,750 @@
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/indexcard.css" rel="stylesheet" />
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>*@
+    <script src="https://code.jquery.com/jquery-1.4.1.min.js" integrity="sha256-LOx49zn73f7YUs15NNJTDnzEyPFLOGc7A7pfuICtTMc=" crossorigin="anonymous"></script>
+    <link href="~/css/jQuery.alert.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="~/img/favicon.ico">
+    <script src="~/js/jQuery.alert.js"></script>
+    <script src="~/js/jquery-3.6.1.min.js"></script>
+</head>
+
+<body>
+
+    <form id="form1">
+        <div class="wrapper" style="border-style: double;">
+
+            <table width="100%">
+                <tr>
+
+                    <th valign="middle" style="vertical-align: middle; padding: 7px;">
+                        <img src="~/img/govt.png" class="logo" />
+                    </th>
+                   
+
+                    <th class="headText" width="500px" style="text-align: center; padding: 7px;">
+
+                        <span>Joint entrance test-2022-24</span> govt. college of physical education, odisha
+                    </th>
+
+                    <th align="center" style="text-align: center; padding: 7px;">
+                        <Image ID="imgId" class="brcd" Width="150px" />
+                        <br />
+                        <span class="barcode-text">
+
+                            <Label ID="lblRefNo"></Label>
+                            <br />
+                            <Label ID="lblInfo"></Label>
+                        </span>
+                        <center class="NOPRINT">
+                            <a onclick="window.print();return false;" data-toggle="tooltip" title="Click here to take a print"
+                               style="cursor: pointer;">
+                                <img src="~/img/print_ICON.gif" />
+                              
+                            </a>
+                        </center>
+                    </th>
+
+                </tr>
+            </table>
+
+
+            <table class="table table-bordered margn-btm-0">
+
+
+                <tr>
+                    <td align="center" valign="middle" width="580px">
+                        <span class="copy">Candidate's Copy</span> <span class="Fitness">Validation cum PFT</span>
+
+                        <p style="padding-top: 0px; text-align: left; margin-bottom: 0px; font-size: 16px; font-weight: bold;">
+                            Index No :
+                            <Label ID="lblOCRefNo"></Label>
+                        </p>
+                        <p style="padding-top: 0px; text-align: left; margin-bottom: 0px; font-size: 16px; font-weight: bold;">
+                            Course :
+                            <Label ID="lblOCCourse"></Label>
+                        </p>
+                        <p style="padding-top: 0px; margin-bottom: 0px; text-align: left; font-size: 16px; font-weight: bold;">
+                            Name :
+                            <Label ID="lblOCName"></Label>
+                        </p>
+                        <p style="padding-top: 0px; margin-bottom: 0px; text-align: left; font-size: 16px; font-weight: bold;">
+                            Gender :
+                            <Label ID="lblOCGender"></Label>
+                        </p>
+                        <p style="padding-top: 0px; margin-bottom: 0px; text-align: left; font-size: 16px; font-weight: bold;">
+                            Date :
+                            <Label ID="lblOCPFTDate"></Label>
+                        </p>
+
+                    </td>
+                    <td align="center" valign="middle">
+                        <img class="image-admit" src="../images/noimage.JPG"  alt="" id="imgOCPhoto" />
+
+                        @*</td>
+
+                            <td width="150px" align="center" valign="middle">*@
+
+
+                        <br />
+
+                        <img height="50" width="140" src="../images/signature11.png"  id="imgOCSign" />
+                    </td>
+
+                </tr>
+
+
+
+                <tr>
+                    <td colspan="2">
+                        <table width="100%" class="margn-btm-0">
+                            <tr>
+                                <td width="492px"><strong>1. 50 mts Sprint...........................................................................secs.</strong></td>
+                                <td width="10px"></td>
+                                <td>
+                                    <table width="100%">
+                                        <tr>
+                                            <td width="80px">Tester 1</td>
+                                            <td>
+                                                <label class="tester"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" height="5px"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tester 2</td>
+                                            <td>
+                                                <label class="tester"></label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+
+
+                <tr>
+                    <td width="100%" colspan="2">
+                        <table width="100%" class="margn-btm-0">
+                            <tr>
+                                <td width="180px">
+                                    <div class="topmargn" style="margin-left: 0px;">2. Standing Board Jump </div>
+                                </td>
+
+                                <td width="180px">
+
+                                    <table class="table table-bordered margn-btm-0">
+                                        <tr width="20px">
+                                            <th align="center">T1-mts</th>
+                                            <th align="center">T2-mts</th>
+                                            <th align="center">T3-mts</th>
+                                            <th align="center">Best Trial mts</th>
+                                        </tr>
+
+                                        <tr width="20px">
+                                            <td height="30px"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+
+                                    </table>
+                                </td>
+                                <td width="10px"></td>
+
+                                <td width="200px">
+                                    <table width="100%">
+                                        <tr>
+                                            <td width="80px">Tester 1</td>
+                                            <td>
+                                                <label class="tester"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" height="5px"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tester 2</td>
+                                            <td>
+                                                <label class="tester"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" height="5px"></td>
+                                        </tr>
+
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td width="100%" colspan="2">
+                        <table width="100%" class="margn-btm-0">
+                            <tr>
+                                <td width="180px">
+                                    <div class="" style="margin-top: 10px; margin-left: 0px;">3. Over head Back Throw (2kg/3kg) </div>
+                                </td>
+
+                                <td width="180px">
+
+                                    <table class="table table-bordered margn-btm-0">
+                                        <tr width="20px">
+                                            <th align="center">T1-mts</th>
+                                            <th align="center">T2-mts</th>
+                                            <th align="center">T3-mts</th>
+                                            <th align="center">Best Trial mts</th>
+                                        </tr>
+
+                                        <tr width="20px">
+                                            <td height="30px"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+
+                                    </table>
+                                </td>
+                                <td width="10px"></td>
+
+                                <td width="200px">
+                                    <table width="100%">
+
+                                        <tr>
+                                            <td width="80px">Tester 1</td>
+                                            <td>
+                                                <label class="tester"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" height="5px"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tester 2</td>
+                                            <td>
+                                                <label class="tester"></label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+
+                </tr>
+
+
+
+                <tr>
+                    <td colspan="2">
+                        <table width="100%" class="margn-btm-0">
+                            <tr>
+                                <td width="492px"><strong>4. 1000 mts. Run/Walk  .......................................................min/secs.</strong></td>
+                                <td width="10px"></td>
+                                <td>
+                                    <table width="100%">
+                                        <tr>
+                                            <td width="80px">Tester 1</td>
+                                            <td>
+                                                <label class="tester"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" height="5px"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tester 2</td>
+                                            <td>
+                                                <label class="tester"></label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" align="right" valign="botom" style="vertical-align: bottom;" class="pt-20" height="50px"><strong>Signature of the Candidate</strong></td>
+                </tr>
+            </table>
+
+        
+
+            <table width="100%" class="margn-btm-0">
+                <tr>
+                    <td style="padding: 5px;">
+                        <p>
+                            <Label ID="lblNB1"  Text=""></Label>
+
+                        </p>
+                        <p style="margin-bottom: 5px; font-weight: normal;">1. Rs. 200/-(Bank Draft in favour of Principal GCPE, Bhubaneswar)</p>
+
+                        <p style="margin-bottom: 5px; font-weight: normal;">2. Common Application Form (CAF) Copy.</p>
+                        <p style="margin-bottom: 5px; font-weight: normal;">3. Two (2) recent colour passport size photographs.</p>
+                        <p style="font-weight: normal;">4. Self attested photocopy of Aadhaar/ Voter ID/ Driving license.</p>
+                        <p style="font-weight: normal;">
+                            5. Apart from these documents, All the original documents along with self attested photo
+                            copy of enclosers from CAF should be produced during validation.
+                            Any deviation to the above will not be entertained for PFT test.
+                        </p>
+                        <p style="font-weight: normal;">6.Counter signed certificate of sports hostel-in-charge in case of sports hostel students.</p>
+
+                        <p>All Candidates should strictly follow COVID-19 guidelines issued by Government</p>
+
+                        <p style="margin-bottom: 5px; font-weight: normal;"><b> All the candidates are directed to come with RT-PCR report at the time of validation cum physical fitness test.</b></p>
+
+
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+
+        <div class="wrapper" style="border-style: double;">
+
+            <table width="100%">
+                <tr>
+                    <th valign="middle" style="vertical-align: middle; padding: 7px;" width="80px">
+                        <img src="../img/govt.png" class="logo" />
+                    </th>
+                    <th class="headText" style="text-align: center; padding: 7px;" width="500px">
+                        <span class="barcode-text" style="padding: 7px;">Joint entrance test-2022-24 </span>govt. college of physical education, odisha
+                    </th>
+
+                    <th align="center" style="text-align: center;">
+                        <Image ID="imgId1" class="brcd"  Width="150px" />
+                        <br />
+                        <span class="barcode-text">
+                            <Label ID="lblRefNo1" ></Label>
+                            <br />
+                            <Label ID="lblInfo1" ></Label>
+                        </span>
+
+                    </th>
+
+                </tr>
+            </table>
+
+            <table class="table table-bordered margn-btm-0">
+                <tr>
+                    <td style="padding: 0px;">
+                        <table class="table table-bordered margn-btm-0">
+                            <tr>
+                                <td align="center" valign="middle">
+                                    <span class="copy" style="padding-left: 1em;">Office Copy</span> <span class="Fitness" style="padding-left: 1em;">Validation cum PFT</span>
+
+                                    <p style="padding-top: 0px; text-align: left; margin-bottom: 0px; font-size: 16px; font-weight: bold;">
+                                        Index No :
+                                        <Label ID="lblSECRefNo"></Label>
+                                    </p>
+                                    <p style="padding-top: 0px; text-align: left; margin-bottom: 0px; font-size: 16px; font-weight: bold;">
+                                        Course :
+                                        <Label ID="lblSECourse"></Label>
+                                    </p>
+                                    <p style="padding-top: 0px; margin-bottom: 0px; text-align: left; font-size: 16px; font-weight: bold;">
+                                        Name :
+                                        <Label ID="lblSECName"></Label>
+                                    </p>
+                                    <p style="padding-top: 0px; margin-bottom: 0px; text-align: left; font-size: 16px; font-weight: bold;">
+                                        Gender :
+                                        <Label ID="lblSECGender"></Label>
+                                    </p>
+                                    <p style="padding-top: 0px; margin-bottom: 0px; text-align: left; font-size: 16px; font-weight: bold;">
+                                        Date :
+                                        <Label ID="lblSECPFTDate"></Label>
+                                    </p>
+                                </td>
+                                <td width="150px" align="center" valign="middle">
+                                    <img class="image-admit" src="../images/noimage.JPG"  alt="" id="imgCCPhoto" />
+
+                                
+
+                                    <img height="50" width="140" src="../images/signature11.png"  id="imgCCSign" />
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+                                <td colspan="2">
+                                    <table width="100%" class="margn-btm-0">
+                                        <tr>
+                                            <td width="492px"><strong>1. 50 mts Sprint...........................................................................secs.</strong></td>
+                                            <td width="10px"></td>
+                                            <td>
+                                                <table width="100%">
+                                                    <tr>
+                                                        <td width="80px">Tester 1</td>
+                                                        <td>
+                                                            <label class="tester"></label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2" height="5px"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tester 2</td>
+                                                        <td>
+                                                            <label class="tester"></label>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+
+
+
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td width="100%" colspan="2">
+                        <table width="100%" class="margn-btm-0">
+                            <tr>
+                                <td width="180px">
+                                    <div class="topmargn" style="margin-left: 0px;">2. Standing Board Jump </div>
+                                </td>
+
+                                <td width="180px">
+
+                                    <table class="table table-bordered margn-btm-0">
+                                        <tr width="20px">
+                                            <th align="center">T1-mts</th>
+                                            <th align="center">T2-mts</th>
+                                            <th align="center">T3-mts</th>
+                                            <th align="center">Best Trial mts</th>
+                                        </tr>
+
+                                        <tr width="20px">
+                                            <td height="30px"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+
+                                    </table>
+                                </td>
+                                <td width="10px"></td>
+
+                                <td width="200px">
+                                    <table width="100%">
+                                        <tr>
+                                            <td width="80px">Tester 1</td>
+                                            <td>
+                                                <label class="tester"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" height="5px"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tester 2</td>
+                                            <td>
+                                                <label class="tester"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" height="5px"></td>
+                                        </tr>
+
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td width="100%" colspan="2">
+                        <table width="100%" class="margn-btm-0">
+                            <tr>
+                                <td width="180px">
+                                    <div class="" style="margin-top: 10px; margin-left: 0px;">3. Over head Back Throw (2kg/3kg)</div>
+                                </td>
+
+                                <td width="180px">
+
+                                    <table class="table table-bordered margn-btm-0">
+                                        <tr width="20px">
+                                            <th align="center">T1-mts</th>
+                                            <th align="center">T2-mts</th>
+                                            <th align="center">T3-mts</th>
+                                            <th align="center">Best Trial mts</th>
+                                        </tr>
+
+                                        <tr width="20px">
+                                            <td height="30px"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+
+                                    </table>
+                                </td>
+                                <td width="10px"></td>
+
+                                <td width="200px">
+                                    <table width="100%">
+
+                                        <tr>
+                                            <td width="80px">Tester 1</td>
+                                            <td>
+                                                <label class="tester"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" height="5px"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tester 2</td>
+                                            <td>
+                                                <label class="tester"></label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <table width="100%" class="margn-btm-0">
+                            <tr>
+                                <td width="492px"><strong>4. 1000 mts. Run/Walk .......................................................min/secs.</strong></td>
+                                <td width="10px"></td>
+                                <td>
+                                    <table width="100%">
+                                        <tr>
+                                            <td width="80px">Tester 1</td>
+                                            <td>
+                                                <label class="tester"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" height="5px"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tester 2</td>
+                                            <td>
+                                                <label class="tester"></label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" align="right" valign="botom" style="vertical-align: bottom;" class="pt-20" height="50px"><strong>Signature of the Candidate</strong></td>
+                </tr>
+            </table>
+
+
+
+            <table width="100%" class="margn-btm-0">
+                <tr>
+                    <td style="padding: 5px;">
+                        <p>
+                            <Label ID="lblNB2"></Label>
+                    
+                        </p>
+                        <p style="margin-bottom: 5px; font-weight: normal;">1. Rs. 200/-(Bank Draft in favour of Principal GCPE, Bhubaneswar)</p>
+
+                        <p style="margin-bottom: 5px; font-weight: normal;">2. Common Application Form (CAF) Copy.</p>
+                        <p style="margin-bottom: 5px; font-weight: normal;">3. Two (2) recent colour passport size photographs.</p>
+                        <p style="font-weight: normal;">4. Self attested photocopy of Aadhaar/ Voter ID/ Driving license.</p>
+                        <p style="font-weight: normal;">
+                            5. Apart from these documents, All the original documents along with self attested photo
+                            copy of enclosers from CAF should be produced during validation.
+                            Any deviation to the above will not be entertained for PFT test.
+                        </p>
+                        <p style="font-weight: normal;">6.Counter signed certificate of sports hostel-in-charge in case of sports hostel students.</p>
+
+                        <p>All Candidates should strictly follow COVID-19 guidelines issued by Government</p>
+
+                        <p style="margin-bottom: 5px; font-weight: normal;"><b> All the candidates are directed to come with RT-PCR report at the time of validation cum physical fitness test.</b></p>
+                      
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+    </form>
+</body>
+
+</html>
+<script type="text/javascript">
+
+            $(document).ready(function () {
+                $.ajax({
+                    data: {},
+                    url:'@Url.Action("indexcardA", "StudentDashboard")',
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        var obj = JSON.stringify(data);
+                        var result = JSON.parse(obj);
+                        
+                        var obj = data['indexcard'];
+                        var barcode = data['barcode']
+
+                        var image = data['image']
+                        var signature = data['Signature']
+                        
+                        if (obj != null) {
+                            //$('#tblDatatable').DataTable().destroy();
+                            var print = "print";
+                            var htm = '';
+                            if (obj[0].intStatus == 0) {
+                                $('#imgId').attr('src', barcode);
+                                $('#imgId1').attr('src', barcode);
+                                $('#imgOCPhoto').attr('src', image);
+                                $('#imgCCPhoto').attr('src', image);
+                                $('#imgOCSign').attr('src', signature);
+                                $('#imgCCSign').attr('src', signature);
+                                $('#lblOCRefNo').text(obj[0].vchApplicationNo);
+                                $('#lblSECRefNo').text(obj[0].vchApplicationNo);
+                                $('#lblOCCourse').text(obj[0].vchCourseName);
+                                $('#lblSECourse').text(obj[0].vchCourseName);
+                                $('#lblOCName').text(obj[0].vchApplicantName);
+                                $('#lblSECName').text(obj[0].vchApplicantName);
+                                $('#lblOCGender').text(obj[0].vchGender);
+                                $('#lblSECGender').text(obj[0].vchGender);
+
+                                var PFTDate = obj[0].fromDate + " from 7:00 AM to 5:30 PM   Group : " + obj[0].toDate;
+
+                                // var PFTDate = " from 7:00 AM to 5:30 PM   Group : ";
+
+                                $('#lblOCPFTDate').text(PFTDate);
+                                $('#lblSECPFTDate').text(PFTDate);
+
+                                $('#lblRefNo').text(obj[0].vchApplicationNo);
+                                $('#lblRefNo1').text(obj[0].vchApplicationNo);
+                                var course = "";
+                                var gender = "";
+                                var service = "";
+                                var quota = "";
+                                if (obj[0].vchCourseName == "B.P.Ed.")
+                                    course = "B";
+                                else if (obj[0].vchCourseName == "M.P.Ed.")
+                                    course = "M";
+                                else
+                                    course = "";
+                                if (obj[0].vchGender == "MALE")
+                                    gender = "M";
+                                else if (obj[0].vchGender == "FEMALE")
+                                    gender = "W";
+                                else
+                                    gender = "";
+
+                                if (obj[0].vchApplicantType == "FRESH")
+                                    service = "FS";
+                                else if (obj[0].vchApplicantType == "IN SERVICE")
+                                    service = "INS";
+                                else
+                                    service = "";
+                                if (obj[0].intReserveCategoryID == 1)
+                                    quota = "PWD";
+                                else
+                                    quota = "";
+                                var info = course + gender + service + quota;
+                                $('#lblInfo').text(info);
+                                $('#lblInfo1').text(info);
+                                var lablea = "N.B:- Validation and Physical Fitness Test will be held on " + obj[0].fromDate + "(Group-" + obj[0].toDate + ")" +
+                                    " from 7:00 AM to 5:30 PM at Kalinga Stadium Warm-up Practice Field (Running) with following documents in PHOTOCOPY & Original as well.";
+
+                                var lableb = "N.B:- Validation and Physical Fitness Test will be held on " + obj[0].fromDate + "(Group-" + obj[0].toDate + ")" +
+                                    " from 7:00 AM to 5:30 PM at Kalinga Stadium Warm-up Practice Field (Running) with following documents in PHOTOCOPY & Original as well.";
+                                $('#lblNB1').text(lablea);
+                                $('#lblNB2').text(lableb);
+                            }
+
+                            else if (obj[0].intStatus == 1) {
+                                jAlert( "xyz",'<strong>You are not eligible to print Index Card !</strong>', function (r) {
+                                    if (r) {
+
+                                        window.location.href = 'StudentDashbaord';
+                                        return true;
+                                    }
+                                    else {
+
+                                        return false;
+                                    }
+                                });
+
+                            }
+                            else {
+                                jAlert( "xyz",'<strong>You are not eligible to print Index Card !</strong>', function (r) {
+                                    if (r) {
+
+                                        window.location.href = 'StudentDashbaord';
+                                        return true;
+                                    }
+                                    else {
+
+                                        return false;
+                                    }
+                                });
+                            }
+
+                        }
+                        else
+                        {
+                            if (result.state == "error") {
+
+                                jAlert("xyz", result.message,  function (r) {
+                                    if (r) {
+                                        
+                                        window.location.href = 'StudentDashbaord';
+                                        return true;
+                                    }
+                                    else {
+                                        
+                                        return false;
+                                    }
+                                });
+                                
+                            }
+                            else {
+                                jAlert(result.message);
+                            }
+                        }
+                       
+
+                        
+                        
+                    },
+
+                });
+
+            });
+
+</script>
