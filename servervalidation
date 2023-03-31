@@ -1,0 +1,1556 @@
+ public static string ServerSidevalidation(CAFAplly details, List<QualificationSports> education, List<AchievementinfoSports> achivement)
+        {
+            char[] SpecialChars;
+            Regex MobExp, EmailExp;
+            string strMessage = "pass";
+
+            try
+            {
+                //strMessage = ServerValidations.Validatedropdown(education[0].BoardID.ToString(), "the name of your examination board");
+                //if (strMessage != "pass")
+                //{
+                //    return strMessage;
+                //}
+                //strMessage = ServerValidations.Validatedropdown(education[0].YearOfPassing.ToString(), "year of passing");
+                //if (strMessage != "pass")
+                //{
+                //    return strMessage;
+                //}
+
+                strMessage = ServerValidations.check(details.ApplicantName == null ? "" : details.ApplicantName, "M", "Applicant's Name", 100, ".");
+                if (strMessage != "pass")
+                {
+                    return strMessage;
+                }
+                if (details.ApplicantName.Length == 1)
+                {
+                    strMessage = "Applicant's Name is too short!";
+                    return strMessage;
+                }
+                strMessage = ServerValidations.isNumber(details.ApplicantName == null ? "" : details.ApplicantName, "Applicant's Name");
+                if (strMessage != "pass")
+                {
+                    return strMessage;
+                }
+
+
+                strMessage = ServerValidations.Validatedropdown(details.GenderID.ToString(), "your gender");
+                if (strMessage != "pass")
+                {
+                    return strMessage;
+                }
+                strMessage = ServerValidations.check(details.FatherName == null ? "" : details.FatherName, "M", "Father's Name", 100, ".");
+                if (strMessage != "pass")
+                {
+                    return strMessage;
+                }
+                if (details.FatherName.Length == 1)
+                {
+                    strMessage = "Father's Name is too short!";
+                    return strMessage;
+                }
+                strMessage = ServerValidations.isNumber(details.FatherName == null ? "" : details.FatherName, "Father's Name");
+                if (strMessage != "pass")
+                {
+                    return strMessage;
+                }
+                strMessage = ServerValidations.check(details.MotherName == null ? "" : details.MotherName, "M", "Mother's Name", 100, ".");
+                if (strMessage != "pass")
+                {
+                    return strMessage;
+                }
+                if (details.MotherName.Length == 1)
+                {
+                    strMessage = "Mother's Name is too short!";
+                    return strMessage;
+                }
+                strMessage = ServerValidations.isNumber(details.MotherName == null ? "" : details.MotherName, "Mother's Name");
+                if (strMessage != "pass")
+                {
+                    return strMessage;
+                }
+
+                //=======================Checking Valid DOB=======================  
+
+
+
+
+
+                if (!ServerValidations.IsValidDOB(details.DOB))
+                {
+                    strMessage = "Please enter valid date of birth !";
+                    return strMessage;
+                }
+                MobExp = new Regex(@"^((\+){0,1}91(\s){0,1}(\-){0,1}(\s){0,1}){0,1}[6789][0-9](\s){0,1}(\-){0,1}(\s){0,1}[0-9]{1}[0-9]{7}$");
+                if (!MobExp.IsMatch(details.MobileNo))
+                {
+                    strMessage = "Please enter valid   Mobile  No.";
+                    return strMessage;
+
+                }
+                if (((details.AltMobileNo) != "") && (!MobExp.IsMatch(details.AltMobileNo)))
+                {
+                    strMessage = "Please enter valid Alter  Mobile  No.";
+                    return strMessage;
+
+                }
+
+                if (!string.IsNullOrEmpty(details.AadharNo))
+                {
+                    if (details.AadharNo.Length < 12)
+                    {
+                        strMessage = "Aadhaar No. should have 12 digit !";
+                        return strMessage;
+                    }
+
+                }
+                if (!string.IsNullOrEmpty(details.MatricRollNo))
+                {
+                    if (details.MatricRollNo.Length < 4)
+                    {
+                        strMessage = "Roll no cannot be less than 4 digit  !";
+                        return strMessage;
+                    }
+
+                }
+
+                //"Address and Reservation details validation"
+
+                strMessage = ServerValidations.Validatedropdown(details.StateIDC.ToString(), "State");
+                if (strMessage != "pass")
+                {
+                    return strMessage;
+                }
+                strMessage = ServerValidations.Validatedropdown(details.DistrictIDC.ToString(), "District");
+                if (strMessage != "pass")
+                {
+                    return strMessage;
+                }
+
+                strMessage = ServerValidations.Validatedropdown(details.StateIDP.ToString(), "State");
+                if (strMessage != "pass")
+                {
+                    return strMessage;
+                }
+                strMessage = ServerValidations.Validatedropdown(details.DistrictIDP.ToString(), "District");
+                if (strMessage != "pass")
+                {
+                    return strMessage;
+                }
+                strMessage = ServerValidations.check(details.Address1C == null ? "" : details.Address1C, "M", "Address Line", 350, "-/,.");
+                if (strMessage != "pass")
+                {
+                    return strMessage;
+                }
+                if (details.Address1C.Length == 1)
+                {
+                    strMessage = "Address,Name is too short";
+                    return strMessage;
+                }
+                strMessage = ServerValidations.ValidateTextbox_Mandatory_Numbers(details.PINCodeC == null ? "" : details.PINCodeC, "Please write only numeric values for PIN Code", 6, 6, "");
+                if (strMessage != "pass")
+                {
+                    return strMessage;
+                }
+                strMessage = ServerValidations.check(details.Address1P == null ? "" : details.Address1P, "M", "Address Line", 350, "-/,.");
+                if (strMessage != "pass")
+                {
+                    return strMessage;
+                }
+                if (details.Address1P.Length == 1)
+                {
+                    strMessage = "Address,Name is too short";
+                    return strMessage;
+                }
+                strMessage = ServerValidations.ValidateTextbox_Mandatory_Numbers(details.PINCodeP == null ? "" : details.PINCodeC, "Please write only numeric values for PIN Code", 6, 6, "");
+                if (strMessage != "pass")
+                {
+                    return strMessage;
+                }
+
+                strMessage = ServerValidations.check(details.Address2C == null ? "" : details.Address2C, "M", "Address Line", 350, "-/,.");
+                if (strMessage != "pass")
+                {
+                    return strMessage;
+                }
+                if (details.Address2C.Length == 1)
+                {
+                    strMessage = "Address,Name is too short";
+                    return strMessage;
+                }
+                strMessage = ServerValidations.check(details.Address2P == null ? "" : details.Address2P, "M", "Address Line", 350, "-/,.");
+                if (strMessage != "pass")
+                {
+                    return strMessage;
+                }
+                if (details.Address2P.Length == 1)
+                {
+                    strMessage = "Address,Name is too short";
+                    return strMessage;
+                }
+
+
+
+
+                if (details.CourseID == 1 && details.GenderID == 1 && details.opt2 == 0)
+                {
+                    strMessage = "College Option 2 Cannot be left Blank !";
+                    return strMessage;
+                }
+                if (details.opt1 == details.opt2)
+                {
+                    strMessage = "Both option can not be Same !";
+                    return strMessage;
+                }
+
+
+                //BLANK FIELD PWD
+                if (details.ReserveCategoryID == 1)
+                {
+                    if (details.DisabilityPer == "")
+                    {
+                        strMessage = "Disability Percentage Cannot be left Blank !";
+                        return strMessage;
+                    }
+                    if (details.DisabilityTypeID == 0)
+                    {
+                        strMessage = "Please select Disability Type !";
+                        return strMessage;
+                    }
+                    if (Convert.ToInt32(details.DisabilityPer) < 40 || Convert.ToInt32(details.DisabilityPer) > 100)
+                    {
+                        strMessage = "Disability Percentage Cannot be less than 40 and more than 100 !";
+                        return strMessage;
+                    }
+                    else
+                    {
+                        strMessage = "pass";
+                    }
+                }
+
+                //IN SERVICE BLANK FIELD  CHK
+                if (details.ApplicantTypeID == 2)
+                {
+                    if (details.vchInstitutionName == "")
+                    {
+
+                        strMessage = "InstitutionName  Cannot left blank !";
+                        return strMessage;
+                    }
+                    if (details.serviceStartDate == "")
+                    {
+
+                        strMessage = "Service Start Date Cannot left blank !";
+                        return strMessage;
+                    }
+                    if (details.serviceEndDate == "")
+                    {
+
+                        strMessage = "Service End Date Cannot left blank !";
+                        return strMessage;
+                    }
+
+                    if (Convert.ToDateTime(details.serviceStartDate) > Convert.ToDateTime(details.serviceEndDate))
+                    {
+                        strMessage = "Invalid Date Range! serviceStartDate can not be before serviceEndDate !";
+                        return strMessage;
+                    }
+
+                }
+
+                //IN SERVICE SERICEPERIOD CHK
+                if (details.ApplicantTypeID == 2)
+                {
+                    if (details.serviceperiod < 3)
+                    {
+
+                        strMessage = "Years of Service Must be 3 Years !";
+                        return strMessage;
+                    }
+                }
+
+                //Physical Educational Qualification BLANK FIELD
+                if (details.CourseID == 1)
+                {
+                    if (details.PEQualID == 0)
+                    {
+                        strMessage = "Physical Educational Qualification Cannot be left Blank !";
+                        return strMessage;
+                    }
+
+                }
+                //DOB BLANK FIELD
+
+
+                //Date of birth chk
+                if (details.ApplicantTypeID == 1)
+                {
+                    string date = "";
+                    string status = "";
+                    if (details.SocialCategoryID == 1)
+                    {
+                        if(details.isPresented == true)
+                        {
+                            if (details.ReserveCategoryID == 1)
+                            {
+                                date = "01-Jun-1990";
+                                status = "1";
+                            }
+                            if (details.GenderID == 2)
+                            {
+                                date = "01-Jun-1985";
+                                status = "10";
+                            }
+                            else
+                            {
+                                date = "01-Jun-1990";
+                                status = "12";
+                            }
+                        }
+                        else
+                        {
+                            if (details.ReserveCategoryID == 1)
+                            {
+                                date = "01-Jun-1995";
+                                status = "1";
+                            }
+                            if (details.GenderID == 2)
+                            {
+                                date = "01-Jun-1990";
+                                status = "2";
+                            }
+                            else
+                            {
+                                date = "01-Jun-1995";
+                                status = "3";
+                            }
+                        }
+
+                      
+
+                    }
+                    else if (details.SocialCategoryID == 2 || details.SocialCategoryID == 5)
+                    {
+                        if (details.isPresented == true)
+                        {
+                            if (details.ReserveCategoryID == 1)
+                            {
+                                date = "01-Jun-1985";
+                                status = "10";
+                            }
+                            else if (details.GenderID == 2)
+                            {
+                                date = "01-Jun-1985";
+                                status = "10";
+                            }
+                            else
+                            {
+                                date = "01-Jun-1985";
+                                status = "10";
+
+                            }
+                        }
+                        else
+                        {
+
+                            if (details.ReserveCategoryID == 1)
+                            {
+                                date = "01-Jun-1990";
+                                status = "4";
+                            }
+                            else if (details.GenderID == 2)
+                            {
+                                date = "01-Jun-1990";
+                                status = "5";
+                            }
+                            else
+                            {
+                                date = "01-Jun-1990";
+                                status = "6";
+
+                            }
+                        }
+
+
+                    }
+                    else if (details.SocialCategoryID == 3)
+                    {
+                        if (details.isPresented == true)
+                        {
+                            if (details.ReserveCategoryID == 1)
+                            {
+                                date = "01-Jun-1987";
+                                status = "15";
+                            }
+
+                            if (details.GenderID == 2)
+                            {
+                                date = "01-Jun-1985";
+                                status = "10";
+                            }
+                            else
+                            {
+                                date = "01-Jun-1987";
+                                status = "15";
+                            }
+                        }
+                        else
+                        {
+                            if (details.ReserveCategoryID == 1)
+                            {
+                                date = "01-Jun-1992";
+                                status = "7";
+                            }
+
+                            if (details.GenderID == 2)
+                            {
+                                date = "01-Jun-1990";
+                                status = "8";
+                            }
+                            else
+                            {
+                                date = "01-Jun-1992";
+                                status = "9";
+                            }
+                        }
+                       
+
+                    }
+                    string dateDOB = details.DOB;
+                    DateTime oDate = Convert.ToDateTime(dateDOB);
+                    if (oDate < Convert.ToDateTime(date))
+                    {
+                        if (status == "1")
+                        {
+                            strMessage = "Date Of Birth Should be On or  After 01-Jun-1995 !";
+                            return strMessage;
+                        }
+                        else if (status == "12")
+                        {
+                            strMessage = "Date Of Birth Should be On or  After 1-Jun-1990 !";
+                            return strMessage;
+                        }
+                        else if (status == "2")
+                        {
+                            strMessage = "Date Of Birth Should be On or  After 1-Jun-1990 !";
+                            return strMessage;
+                        }
+                        else if (status == "3")
+                        {
+                            strMessage = "Date Of Birth Should be On or  After 1-Jun-1995 !";
+                            return strMessage;
+                        }
+                        else if (status == "4")
+                        {
+                            strMessage = "Date Of Birth Should be On or  After 1-Jun-1990 !";
+                            return strMessage;
+                        }
+                        else if (status == "5")
+                        {
+                            strMessage = "Date Of Birth Should be On or  After 1-Jun-1990 !";
+                            return strMessage;
+                        }
+                        else if (status == "6")
+                        {
+                            strMessage = "Date Of Birth Should be On or  After 1-Jun-1990 !";
+                            return strMessage;
+                        }
+                        else if (status == "7")
+                        {
+                            strMessage = "Date Of Birth Should be On or  After 1-Jun-1992 !";
+                            return strMessage;
+                        }
+                        else if (status == "8")
+                        {
+                            strMessage = "Date Of Birth Should be On or  After 1-Jun-1990 !";
+                            return strMessage;
+                        }
+                        else if (status == "9")
+                        {
+                            strMessage = "Date Of Birth Should be On or  After 1-Jun-1992 !";
+                            return strMessage;
+                        }
+                        else if (status == "10")
+                        {
+                            strMessage = "Date Of Birth Should be On or  After 1-Jun-1985 !";
+                            return strMessage;
+                        }
+                        else if (status == "15")
+                        {
+                            strMessage = "Date Of Birth Should be On or  After 1-Jun-1987 !";
+                            return strMessage;
+                        }
+                    }
+                }
+
+
+                if (details.opt1 == 0)
+                {
+                    strMessage = "Please select First Option !";
+                    return strMessage;
+                }
+                if (details.CourseID == 1 && details.GenderID == 1 && details.opt2 == 0)
+                {
+
+                    strMessage = "Please select Second Option !";
+                    return strMessage;
+                }
+                if (details.CourseID == 0)
+                {
+
+                    strMessage = "Please select Course !";
+                    return strMessage;
+                }
+
+
+                
+               
+
+                //InputRadio button chk
+                if (details.isPresented == null && details.isPresented == null)
+                {
+                    strMessage = "Please check whether you have represented the state in recognized National/AIIU Sports and Game Competition !";
+                    return strMessage;
+                }
+                if (details.AppearedOdia == null && details.AppearedOdia == null)
+                {
+                    strMessage = "Please check whether you have studied Odia at ME Standard !";
+                    return strMessage;
+                }
+                if (details.ApplicantTypeID == 1)
+                {
+                    if (details.Hostelsp == null && details.Hostelsp == null)
+                    {
+                        strMessage = "Please check Have you studied in Sports Hostel of Odisha under Department of Sports & Youth Services, Government of Odisha.!";
+                        return strMessage;
+                    }
+                }
+                if (details.crime == null && details.crime == null)
+                {
+                    strMessage = "Please check Crime Details !";
+                    return strMessage;
+                }
+
+
+
+                //education part blank field
+                //FOR MATRIC
+                if (education.Count >= 1 && education[0].ExamID == 0)
+                {
+                    strMessage = "Please select 10th/HSC/Equivalent Exam !";
+                    return strMessage;
+                }
+                if (education.Count >= 1 && education[0].ExamID == 0)
+                {
+                    strMessage = "Please select 10th/HSC/Equivalent Exam !";
+                    return strMessage;
+                }
+                if (education.Count >= 1 && education[0].BoardID == 0)
+                {
+                    strMessage = "Please select 10th/HSC/Equivalent College Board  !";
+                    return strMessage;
+                }
+                if (education.Count >= 1 && education[0].YearOfPassing == 0)
+                {
+                    strMessage = "Please select 10th/HSC/Equivalent Year Of Passing !";
+                    return strMessage;
+                }
+                if (education.Count == 0)
+                {
+                    strMessage = "Please select 10th/HSC/Equivalent Mark Type !";
+                    return strMessage;
+                }
+                if (education.Count >= 1 && education[0].IntMarkTypeID == 0)
+                {
+                    strMessage = "Please select 10th/HSC/Equivalent Mark Type !";
+                    return strMessage;
+                }
+                if (education[0].IntMarkTypeID == 1 && education[0].DECMaxCGPA == 0)
+                {
+                    strMessage = "10th/HSC/Equivalent Maximum CGPA cannot be left blank !";
+                    return strMessage;
+                }
+                if (education[0].IntMarkTypeID == 2 && education[0].MaxMark == 0)
+                {
+                    strMessage = "10th/HSC/Equivalent Maximum Mark cannot be left blank !";
+                    return strMessage;
+                }
+                if (education[0].IntMarkTypeID == 2 && education[0].MarkObtained == 0)
+                {
+                    strMessage = "10th/HSC/Equivalent Obtained Mark cannot be left blank !";
+                    return strMessage;
+                }
+                if (education[0].IntMarkTypeID == 1 && education[0].DECObtainedCGPA == 0)
+                {
+                    strMessage = "10th/HSC/Equivalent Obtained CGPA cannot be left blank !";
+                    return strMessage;
+                }
+
+
+                //FOR PLUSTWO
+                if (education.Count >= 2 && education[1].ExamID == 0)
+                {
+                    strMessage = "Please select +2/12th/equivalent Exam !";
+                    return strMessage;
+                }
+                if (education.Count >= 2 && education[1].BoardID == 0)
+                {
+                    strMessage = "Please select +2/12th/equivalent College Board !";
+                    return strMessage;
+                }
+                if (education.Count >= 2 && education[1].YearOfPassing == 0)
+                {
+                    strMessage = "Please select +2/12th/equivalent Year Of Passing !";
+                    return strMessage;
+                }
+                if (education.Count >= 2 && education[1].RollNo == "")
+                {
+                    strMessage = " +2/12th/equivalent RollNo cannot be left blank !";
+                    return strMessage;
+                }
+
+                if (education.Count < 2)
+                {
+                    strMessage = "Please select +2/12th/equivalent Mark Type !";
+                    return strMessage;
+                }
+                if (education.Count >= 2 && education[1].IntMarkTypeID == 0)
+                {
+                    strMessage = "Please select +2/12th/equivalent Mark Type !";
+                    return strMessage;
+                }
+                if (education[1].IntMarkTypeID == 1 && education[1].DECMaxCGPA == 0)
+                {
+                    strMessage = "+2/12th/equivalent Maximum CGPA cannot be left blank !";
+                    return strMessage;
+                }
+                if (education[1].IntMarkTypeID == 2 && education[1].MaxMark == 0)
+                {
+                    strMessage = "+2/12th/equivalent Maximum Mark cannot be left blank !";
+                    return strMessage;
+                }
+                if (education[1].IntMarkTypeID == 2 && education[1].MarkObtained == 0)
+                {
+                    strMessage = "+2/12th/equivalent Obtained Mark cannot be left blank !";
+                    return strMessage;
+                }
+                if (education[1].IntMarkTypeID == 1 && education[1].DECObtainedCGPA == 0)
+                {
+                    strMessage = "+2/12th/equivalent Obtained CGPA cannot be left blank !";
+                    return strMessage;
+                }
+
+                //FOR GRADUATION
+
+                if (education.Count >= 3 && education[2].ExamID == 0)
+                {
+                    strMessage = "Please select Graduation Exam !";
+                    return strMessage;
+                }
+                if (education.Count >= 3 && education[2].BoardID == 0)
+                {
+                    strMessage = "Please select Graduation College Board !";
+                    return strMessage;
+                }
+                if (education.Count >= 3 && education[2].YearOfPassing == 0)
+                {
+                    strMessage = "Please select Graduation Year Of Passing !";
+                    return strMessage;
+                }
+                if (education.Count >= 2 && education[2].RollNo == "")
+                {
+                    strMessage = " Graduation RollNo cannot be left blank !";
+                    return strMessage;
+                }
+                if (education.Count < 3)
+                {
+                    strMessage = "Please select Graduation Mark Type !";
+                    return strMessage;
+                }
+                if (education.Count >= 3 && education[2].IntMarkTypeID == 0)
+                {
+                    strMessage = "Please select Graduation Mark Type !";
+                    return strMessage;
+                }
+                if (education[2].IntMarkTypeID == 1 && education[2].DECMaxCGPA == 0)
+                {
+                    strMessage = "Graduation Maximum CGPA cannot be left blank !";
+                    return strMessage;
+                }
+                if (education[2].IntMarkTypeID == 2 && education[2].MaxMark == 0)
+                {
+                    strMessage = "Graduation Maximum Mark cannot be left blank !";
+                    return strMessage;
+                }
+                if (education[2].IntMarkTypeID == 2 && education[2].MarkObtained == 0)
+                {
+                    strMessage = "Graduation Obtained Mark cannot be left blank !";
+                    return strMessage;
+                }
+                if (education[2].IntMarkTypeID == 1 && education[2].DECObtainedCGPA == 0)
+                {
+                    strMessage = "Graduation Obtained CGPA cannot be left blank !";
+                    return strMessage;
+                }
+
+
+                //B.P.Ed./ Equivalent or B.Sc in Health blank field
+
+                if (details.CourseID == 2 && education[2].ExamID != 9 && education.Count != 4)
+                {
+                    strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education MARK TYPE  !";
+                    return strMessage;
+                }
+                if (details.CourseID == 2 && education[2].ExamID != 9 && education.Count == 4 && education[3].ExamID == 0)
+                {
+                    strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education Examination  !";
+                    return strMessage;
+                }
+                if (details.CourseID == 2 && education[2].ExamID != 9 && education.Count == 4 && education[3].BoardID == 0)
+                {
+                    strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education Board/University !";
+                    return strMessage;
+                }
+                if (details.CourseID == 2 && education[2].ExamID != 9 && education.Count == 4 && education[3].YearOfPassing == 0)
+                {
+                    strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education Year Of Passing !";
+                    return strMessage;
+                }
+                if (details.CourseID == 2 && education[2].ExamID != 9 && education.Count == 4 && education[3].RollNo == "")
+                {
+                    strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education Roll No cannot be left blank !";
+                    return strMessage;
+                }
+                if (details.CourseID == 2 && education[2].ExamID != 9 && education.Count == 4 && education[3].IntMarkTypeID == 2 && education[3].MaxMark == 0)
+                {
+                    strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education Maximum Mark cannot be left blank !";
+                    return strMessage;
+                }
+                if (details.CourseID == 2 && education[2].ExamID != 9 && education.Count == 4 && education[3].IntMarkTypeID == 1 && education[3].DECMaxCGPA == 0)
+                {
+                    strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education Maximum Mark cannot be left blank !";
+                    return strMessage;
+                }
+                if (details.CourseID == 2 && education[2].ExamID != 9 && education.Count == 4 && education[3].IntMarkTypeID == 2 && education[3].MarkObtained == 0)
+                {
+                    strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education obtained Mark cannot be left blank !";
+                    return strMessage;
+                }
+                if (details.CourseID == 2 && education[2].ExamID != 9 && education.Count == 4 && education[3].IntMarkTypeID == 1 && education[3].DECObtainedCGPA == 0)
+                {
+                    strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education obtained Mark cannot be left blank !";
+                    return strMessage;
+                }
+                if (details.CourseID == 2 && education[2].ExamID != 9 && education.Count == 4 && education[3].Percentage == 0)
+                {
+                    strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education percentage cannot be left blank !";
+                    return strMessage;
+                }
+
+
+
+
+
+
+
+
+
+                // Percentage cannot be less than 33
+                if (education[0].Percentage == Convert.ToDecimal(0.00))
+                {
+                    strMessage = "10th/HSC/Equivalent Percentage cannot be less than 33 !";
+                    return strMessage;
+                }
+                if (education[1].Percentage == Convert.ToDecimal(0.00))
+                {
+                    strMessage = "+2/12th/equivalent Percentage cannot be less than 33 !";
+                    return strMessage;
+                }
+                //if (education[2].Percentage == Convert.ToDecimal(0.00))
+                //{
+                //    strMessage = "Graduation Percentage cannot be less than 33 !";
+                //    return strMessage;
+                //}
+
+
+
+                //Maxmimum Mark can not be less than 100
+                if (education[0].IntMarkTypeID == 2 && education[0].MaxMark < 100)
+                {
+                    strMessage = "10th/HSC/Equivalent Maxmimum Mark can not be less than 100";
+                    return strMessage;
+                }
+                if (education[1].IntMarkTypeID == 2 && education[1].MaxMark < 100)
+                {
+                    strMessage = "+2/12th/equivalent Maxmimum Mark can not be less than 100";
+                    return strMessage;
+                }
+                if (education[2].IntMarkTypeID == 2 && education[2].MaxMark < 100)
+                {
+                    strMessage = "Graduation Maxmimum Mark can not be less than 100";
+                    return strMessage;
+                }
+
+                //Obtained Mark can not be less than 9.5
+                if (education[0].IntMarkTypeID == 1 && education[0].DECObtainedCGPA > Convert.ToDecimal(9.5))
+                {
+                    strMessage = "10th/HSC/Equivalent Obtained Mark can not be greater than 9.5 !";
+                    return strMessage;
+                }
+                if (education[1].IntMarkTypeID == 1 && education[1].DECObtainedCGPA > Convert.ToDecimal(9.5))
+                {
+                    strMessage = "+2/12th/equivalent Obtained Mark can not be greater than 9.5 !";
+                    return strMessage;
+                }
+                if (education[2].IntMarkTypeID == 1 && education[2].DECObtainedCGPA > Convert.ToDecimal(9.5))
+                {
+                    strMessage = "Graduation Obtained Mark can not be greater than 9.5 !";
+                    return strMessage;
+                }
+
+
+                //Obtained <100
+                if (education[0].IntMarkTypeID == 2 && education[0].MarkObtained < 100)
+                {
+                    strMessage = "10th/HSC/Equivalent Obtained Mark can not be less than 100";
+                    return strMessage;
+                }
+                if (education[1].IntMarkTypeID == 2 && education[1].MarkObtained < 100)
+                {
+                    strMessage = "+2/12th/equivalent Obtained Mark can not be less than 100";
+                    return strMessage;
+                }
+                if (education[2].IntMarkTypeID == 2 && education[2].MarkObtained < 100)
+                {
+                    strMessage = "Graduation Obtained Mark can not be less than 100";
+                    return strMessage;
+                }
+
+                //Obtained Mark cannot be more than maximum mark
+                if (education[0].IntMarkTypeID == 2 && (education[0].MaxMark < education[0].MarkObtained))
+                {
+                    strMessage = "10th/HSC/Equivalent Obtained Mark cannot be more than maximum mark !";
+                    return strMessage;
+                }
+
+                if (education[1].IntMarkTypeID == 2 && (education[1].MaxMark < education[1].MarkObtained))
+                {
+                    strMessage = "+2/12th/equivalent Obtained Mark cannot be more than maximum mark !";
+                    return strMessage;
+                }
+
+                if (education[2].IntMarkTypeID == 2 && (education[2].MaxMark < education[2].MarkObtained))
+                {
+                    strMessage = "Graduation Obtained Mark cannot be more than maximum mark !";
+                    return strMessage;
+                }
+                if (education.Count > 3 && education[3].IntMarkTypeID == 2 && (education[3].MaxMark < education[3].MarkObtained))
+                {
+                    strMessage = "Obtained Mark cannot be more than maximum mark !";
+                    return strMessage;
+                }
+
+
+
+                if (education[0].IntMarkTypeID == 1 && (education[0].DECMaxCGPA < education[0].DECObtainedCGPA))
+                {
+                    strMessage = "10th/HSC/Equivalent Obtained Mark cannot be more than maximum mark !";
+                    return strMessage;
+                }
+
+                if (education[1].IntMarkTypeID == 1 && (education[1].DECMaxCGPA < education[1].DECObtainedCGPA))
+                {
+                    strMessage = "+2/12th/equivalent Obtained Mark cannot be more than maximum mark !";
+                    return strMessage;
+                }
+
+                if (education[2].IntMarkTypeID == 1 && (education[2].DECMaxCGPA < education[2].DECObtainedCGPA))
+                {
+                    strMessage = "Graduation Obtained Mark cannot be more than maximum mark !";
+                    return strMessage;
+                }
+                if (education.Count > 3 && education[3].IntMarkTypeID == 1 && (education[3].DECMaxCGPA < education[3].DECObtainedCGPA))
+                {
+                    strMessage = "Obtained Mark cannot be more than maximum mark !";
+                    return strMessage;
+                }
+
+
+                //mark <33
+                if (education[0].Percentage < 33)
+                {
+                    strMessage = "10th/HSC/Equivalent Percentage cannot be less than 33";
+                    return strMessage;
+                }
+                if (education[1].Percentage < 33)
+                {
+                    strMessage = "+2/12th/equivalent Percentage cannot be less than 33";
+                    return strMessage;
+                }
+                //if (education[2].Percentage < 33)
+                //{
+                //    strMessage = "Graduation Percentage cannot be less than 33";
+                //    return strMessage;
+                //}
+
+
+
+                if (details.PEQualID == 6)
+                {
+                    if (details.ApplicantTypeID == 1)
+                    {
+                        strMessage = "Applicant Should be In-Service Type!";
+                        return strMessage;
+                    }
+                    if (details.serviceperiod != Convert.ToDecimal(0.00))
+                    {
+                        if (details.serviceperiod < 3)
+                        {
+                            strMessage = "Applicant Should be In-Service Type!";
+                            return strMessage;
+                        }
+                    }
+                    if (education.Count == 4 && education[3].ExamID == 0)
+                    {
+                        strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education Examination Passed";
+                        return strMessage;
+                    }
+                    if (education.Count == 4 && education[3].BoardID == 0)
+                    {
+                        strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education Board/University";
+                        return strMessage;
+                    }
+                    if (education.Count == 4 && education[3].YearOfPassing == 0)
+                    {
+                        strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education Year Of Passing";
+                        return strMessage;
+                    }
+                    if (education.Count == 4 && education[3].RollNo == "")
+                    {
+                        strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education Roll No cannot be left blank";
+                        return strMessage;
+                    }
+                    if (education.Count == 4 && education[3].IntMarkTypeID == 2 && education[3].MaxMark == 0)
+                    {
+                        strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education Maximum Mark cannot be left blank";
+                        return strMessage;
+                    }
+                    if (education.Count == 4 && education[3].IntMarkTypeID == 1 && education[3].DECMaxCGPA == 0)
+                    {
+                        strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education Maximum Mark cannot be left blank";
+                        return strMessage;
+                    }
+                    if (education.Count == 4 && education[3].IntMarkTypeID == 2 && education[3].MarkObtained == 0)
+                    {
+                        strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education obtained Mark cannot be left blank";
+                        return strMessage;
+                    }
+                    if (education.Count == 4 && education[3].IntMarkTypeID == 1 && education[3].DECObtainedCGPA == 0)
+                    {
+                        strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education obtained Mark cannot be left blank";
+                        return strMessage;
+                    }
+                    if (education.Count == 4 && education[3].Percentage == 0)
+                    {
+                        strMessage = "Please select B.P.Ed./Equivalent or B.Sc in Health and Physical Education percentage cannot be left blank";
+                        return strMessage;
+                    }
+
+                }
+                if ((details.PEQualID == 8) && education.Count != 4 && (education[3].ExamID == 4))
+                {
+                    strMessage = "Both BPEd And Physical Education Can not Be Choosen !";
+                    return strMessage;
+                }
+                if ((details.PEQualID == 8) && education.Count != 4 && (education[2].ExamID == 9))
+                {
+                    strMessage = "Both Integrated B.P.Ed And Physical Education Can not Be Choosen !";
+                    return strMessage;
+                }
+
+                //validatePercentage
+                if (details.ApplicantTypeID == 1 || details.ApplicantTypeID == 2)
+                {
+                    var percentagemark = 45;
+                    if (details.Hostelsp == true)
+                    {
+                        if (details.CourseID == 1)
+                        {
+                            if (details.PEQualID == 1)
+                            {
+                                percentagemark = 45;
+                            }
+                            else if (details.PEQualID == 3 || details.PEQualID == 4 || details.PEQualID == 6 || details.PEQualID == 2)
+                            {
+                                percentagemark = 40;
+                            }
+                            if (details.PEQualID == 5)
+                            {
+                                percentagemark = 33;
+                            }
+                            else
+                                percentagemark = percentagemark;
+
+                            if (details.SocialCategoryID == 2 || details.SocialCategoryID == 5)
+                            {
+                                if (details.PEQualID == 1 || details.PEQualID == 2 || details.PEQualID == 3 || details.PEQualID == 4 || details.PEQualID == 6)
+                                {
+                                    percentagemark = percentagemark - 5;
+                                }
+                            }
+                            if (education[2].Percentage < percentagemark)
+                            {
+                                strMessage = "Percentage cannot be less than" +" "+ percentagemark;
+                                return strMessage;
+                            }
+                            if (education.Count == 4 && education[2].ExamID == 7 && details.PEQualID == 2)
+                            {
+                                percentagemark = 40;
+                                if (details.SocialCategoryID == 2 || details.SocialCategoryID == 5)
+                                {
+                                    percentagemark = 35;
+                                }
+                                if (education.Count == 4 && education[3].Percentage < percentagemark)
+                                {
+                                    strMessage = "Percentage cannot be less than" + percentagemark;
+                                    return strMessage;
+                                }
+                            }
+                            if (education.Count != 4 && education[2].BoardID > 0)
+                            {
+                                if (education.Count > 4 && education[3].Percentage < 33)
+                                {
+
+                                    strMessage = "Percentage cannot be less than 33";
+                                    return strMessage;
+                                }
+                            }
+                        }
+                        if (details.CourseID == 2)
+                        {
+                            percentagemark = 45;
+                            if (details.SocialCategoryID == 2 || details.SocialCategoryID == 5)
+                            {
+                                percentagemark = percentagemark - 5;
+                            }
+                            if ((education[2].ExamID != 9) && (education[2].ExamID != 3) && (education[2].ExamID != 8) && (education[2].ExamID != 10) && (education[2].ExamID != 11) || (education.Count == 4 && education[3].ExamID == 4) || (education[3].ExamID == 12))
+                            {
+                                if (education.Count == 4 && education[3].Percentage < percentagemark)
+                                {
+                                    strMessage = "Percentage cannot be less than" + " " + percentagemark;
+                                    return strMessage;
+                                }
+                                if (education[2].Percentage < 33)
+                                {
+                                    strMessage = "Graduation Percentage cannot be less than 33";
+                                    return strMessage;
+                                }
+                            }
+                            else
+                            {
+                                if (education[2].ExamID == 9)
+                                {
+                                    percentagemark = 45;
+                                    if (details.SocialCategoryID == 2 || details.SocialCategoryID == 5)
+                                    {
+                                        percentagemark = percentagemark - 5;
+                                    }
+                                    if (education[2].Percentage < percentagemark)
+                                    {
+                                        strMessage = "Percentage cannot be less than" +" "+ percentagemark;
+                                        return strMessage;
+                                    }
+                                }
+                               
+
+                            }
+
+
+
+
+
+                        }
+
+                    }
+                    else if (details.ApplicantTypeID == 1 || details.ApplicantTypeID == 2)
+                    {
+                        
+                            if (details.CourseID == 1)
+                            {
+                                if (details.PEQualID == 1)
+                                {
+                                    percentagemark = 50;
+                                }
+                                else if (details.PEQualID == 3 || details.PEQualID == 4 || details.PEQualID == 6 || details.PEQualID == 2)
+                                {
+                                    percentagemark = 45;
+                                }
+                                if (details.PEQualID == 5)
+                                {
+                                    percentagemark = 33;
+                                }
+                                else
+                                    percentagemark = percentagemark;
+
+                                if (details.SocialCategoryID == 2 || details.SocialCategoryID == 5)
+                                {
+                                    if (details.PEQualID == 1 || details.PEQualID == 2 || details.PEQualID == 3 || details.PEQualID == 4 || details.PEQualID == 6)
+                                    {
+                                        percentagemark = percentagemark - 5;
+                                    }
+                                }
+                                if (education[2].Percentage < percentagemark)
+                                {
+                                    strMessage = "Percentage cannot be less than" + percentagemark;
+                                    return strMessage;
+                                }
+                                if (education.Count != 4 && education[2].ExamID == 7 && details.PEQualID == 2)
+                                {
+                                    percentagemark = 45;
+                                    if (details.SocialCategoryID == 2 || details.SocialCategoryID == 5)
+                                    {
+                                        percentagemark = 40;
+                                    }
+                                    if (education.Count != 4 && education[3].Percentage < percentagemark)
+                                    {
+                                        strMessage = "Percentage cannot be less than" + percentagemark;
+                                        return strMessage;
+                                    }
+                                }
+                                if (education.Count >= 4 )
+                                {
+                                    if (education.Count != 4 && education[3].Percentage < 33)
+                                    {
+
+                                        strMessage = "Percentage cannot be less than 33";
+                                        return strMessage;
+                                    }
+                                }
+                            }
+                            if (details.CourseID == 2)
+                            {
+                                percentagemark = 50;
+                                if (details.SocialCategoryID == 2 || details.SocialCategoryID == 5)
+                                {
+                                    percentagemark = percentagemark - 5;
+                                }
+                                if ((education[2].ExamID != 9) && (education[2].ExamID != 3) && (education[2].ExamID != 8) && (education[2].ExamID != 10) && (education[2].ExamID != 11) || (education.Count == 4 && education[3].ExamID == 4) || (education[3].ExamID == 12))
+                                {
+                                    if (education.Count == 4 && education[3].Percentage < percentagemark)
+                                    {
+                                        strMessage = "Percentage cannot be less than" +" "+ percentagemark;
+                                        return strMessage;
+                                    }
+                                if (education[2].Percentage < 33)
+                                {
+                                    strMessage = "Graduation Percentage cannot be less than 33";
+                                    return strMessage;
+                                }
+
+                            }
+                            else
+                                {
+                                if (education[2].ExamID == 9)
+                                {
+                                    percentagemark = 45;
+                                    if (details.SocialCategoryID == 2 || details.SocialCategoryID == 5)
+                                    {
+                                        percentagemark = percentagemark - 5;
+                                    }
+                                    if (education[2].Percentage < percentagemark)
+                                    {
+                                        strMessage = "Percentage cannot be less than" +" "+ percentagemark;
+                                        return strMessage;
+                                    }
+
+                                }
+                                    
+
+                                }
+                            }
+
+                        
+
+                    }
+
+                }
+
+                
+
+                //ValidateYOP
+                if (education[1].YearOfPassing != 0)
+                {
+                    if (education[1].YearOfPassing < education[0].YearOfPassing + 2)
+                    {
+                        strMessage = "Plus two Year Of Passing should be 2 years after Matric Year Of Passing !";
+                        return strMessage;
+                    }
+                }
+                if (education[2].YearOfPassing != 0 && education[2].ExamID == 3 || education[2].ExamID == 8 || education[2].ExamID == 10)
+                {
+                    if (education[2].YearOfPassing < education[1].YearOfPassing + 3)
+                    {
+                        strMessage = "Graduation Year Of Passing should be 3 years after Plus Two Year Of Passing !";
+                        return strMessage;
+                    }
+                }
+                if (education[2].YearOfPassing != 0 && education[2].ExamID == 11 || education[2].ExamID == 9)
+                {
+                    if (education[2].YearOfPassing < education[1].YearOfPassing + 4)
+                    {
+                        strMessage = "Graduation Year Of Passing should be 4 years after Plus Two Year Of Passing !";
+                        return strMessage;
+                    }
+                }
+                if (education.Count > 3 && education[3].YearOfPassing != 0)
+                {
+                    if (education.Count > 3 && education[3].ExamID == 4)
+                    {
+                        if (education[3].YearOfPassing < 2014)
+                        {
+
+                            if (education[3].YearOfPassing < education[2].YearOfPassing + 1)
+                            {
+                                strMessage = "BPED Year Of Passing should be 1 years after Graduation Year Of Passing !";
+                                return strMessage;
+                            }
+
+                        }
+                        else if (education[3].YearOfPassing < 2013)
+                        {
+                            if (education[3].YearOfPassing < education[2].YearOfPassing + 2)
+                            {
+                                strMessage = "BPED Year Of Passing should be 2 years after Graduation Year Of Passing !";
+                                return strMessage;
+                            }
+
+                        }
+                    }
+                    else if (education[3].ExamID == 7)
+                    {
+                        if (education[3].YearOfPassing < education[2].YearOfPassing + 1)
+                        {
+                            strMessage = "CPED Year Of Passing should be 1 years after Graduation Year Of Passing !";
+                            return strMessage;
+                        }
+                    }
+                    else if (education[3].ExamID == 12)
+                    {
+                        if (education[3].YearOfPassing < education[2].YearOfPassing + 3)
+                        {
+                            strMessage = "B.Sc in Health  and Physical Education Year Of Passing should be 3 years after Graduation Year Of Passing !";
+                            return strMessage;
+                        }
+                    }
+
+                }
+
+
+                //SPORTS ACHIVEMENT 
+                if (achivement[0].SportsId == 0)
+                {
+                    strMessage = "Name Of Sports can not be left blank !";
+                    return strMessage;
+                }
+                if (achivement[0].LevelOfParticpationId == 0)
+                {
+                    strMessage = "Level of Participation can not be left blank !";
+                    return strMessage;
+                }
+                if (achivement[0].Positionid == 0)
+                {
+                    strMessage = "Position can not be left blank !";
+                    return strMessage;
+                }
+                if (achivement[0].YearOfRep == 0)
+                {
+                    strMessage = "Year Of Representation can not be left blank !";
+                    return strMessage;
+                }
+                if (achivement.Count > 1)
+                {
+                    {
+                        if (achivement[1].SportsId == 0)
+                        {
+                            strMessage = "Name Of Sports can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[1].LevelOfParticpationId == 0)
+                        {
+                            strMessage = "Level of Participation can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[1].Positionid == 0)
+                        {
+                            strMessage = "Position can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[1].YearOfRep == 0)
+                        {
+                            strMessage = "Year Of Representation can not be left blank !";
+                            return strMessage;
+                        }
+
+                    }
+
+                }
+                if (achivement.Count > 2)
+                {
+                    {
+                        if (achivement[2].SportsId == 0)
+                        {
+                            strMessage = "Name Of Sports can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[2].LevelOfParticpationId == 0)
+                        {
+                            strMessage = "Level of Participation can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[2].Positionid == 0)
+                        {
+                            strMessage = "Position can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[2].YearOfRep == 0)
+                        {
+                            strMessage = "Year Of Representation can not be left blank !";
+                            return strMessage;
+                        }
+
+                    }
+
+                }
+                if (achivement.Count > 3)
+                {
+                    {
+                        if (achivement[3].SportsId == 0)
+                        {
+                            strMessage = "Name Of Sports can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[3].LevelOfParticpationId == 0)
+                        {
+                            strMessage = "Level of Participation can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[3].Positionid == 0)
+                        {
+                            strMessage = "Position can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[3].YearOfRep == 0)
+                        {
+                            strMessage = "Year Of Representation can not be left blank !";
+                            return strMessage;
+                        }
+
+                    }
+
+                }
+                if (achivement.Count > 4)
+                {
+                    {
+                        if (achivement[4].SportsId == 0)
+                        {
+                            strMessage = "Name Of Sports can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[4].LevelOfParticpationId == 0)
+                        {
+                            strMessage = "Level of Participation can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[4].Positionid == 0)
+                        {
+                            strMessage = "Position can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[4].YearOfRep == 0)
+                        {
+                            strMessage = "Year Of Representation can not be left blank !";
+                            return strMessage;
+                        }
+
+                    }
+
+                }
+                if (achivement.Count > 5)
+                {
+                    {
+                        if (achivement[5].SportsId == 0)
+                        {
+                            strMessage = "Name Of Sports can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[5].LevelOfParticpationId == 0)
+                        {
+                            strMessage = "Level of Participation can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[5].Positionid == 0)
+                        {
+                            strMessage = "Position can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[5].YearOfRep == 0)
+                        {
+                            strMessage = "Year Of Representation can not be left blank !";
+                            return strMessage;
+                        }
+
+                    }
+
+                }
+                if (achivement.Count > 6)
+                {
+                    {
+                        if (achivement[6].SportsId == 0)
+                        {
+                            strMessage = "Name Of Sports can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[6].LevelOfParticpationId == 0)
+                        {
+                            strMessage = "Level of Participation can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[6].Positionid == 0)
+                        {
+                            strMessage = "Position can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[6].YearOfRep == 0)
+                        {
+                            strMessage = "Year Of Representation can not be left blank !";
+                            return strMessage;
+                        }
+
+                    }
+
+                }
+                if (achivement.Count > 7)
+                {
+                    {
+                        if (achivement[7].SportsId == 0)
+                        {
+                            strMessage = "Name Of Sports can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[7].LevelOfParticpationId == 0)
+                        {
+                            strMessage = "Level of Participation can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[7].Positionid == 0)
+                        {
+                            strMessage = "Position can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[7].YearOfRep == 0)
+                        {
+                            strMessage = "Year Of Representation can not be left blank !";
+                            return strMessage;
+                        }
+
+                    }
+
+                }
+                if (achivement.Count > 8)
+                {
+                    {
+                        if (achivement[8].SportsId == 0)
+                        {
+                            strMessage = "Name Of Sports can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[8].LevelOfParticpationId == 0)
+                        {
+                            strMessage = "Level of Participation can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[8].Positionid == 0)
+                        {
+                            strMessage = "Position can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[8].YearOfRep == 0)
+                        {
+                            strMessage = "Year Of Representation can not be left blank !";
+                            return strMessage;
+                        }
+
+                    }
+
+                }
+                if (achivement.Count > 9)
+                {
+                    {
+                        if (achivement[9].SportsId == 0)
+                        {
+                            strMessage = "Name Of Sports can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[9].LevelOfParticpationId == 0)
+                        {
+                            strMessage = "Level of Participation can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[9].Positionid == 0)
+                        {
+                            strMessage = "Position can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[9].YearOfRep == 0)
+                        {
+                            strMessage = "Year Of Representation can not be left blank !";
+                            return strMessage;
+                        }
+
+                    }
+
+                }
+                if (achivement.Count > 10)
+                {
+                    {
+                        if (achivement[10].SportsId == 0)
+                        {
+                            strMessage = "Name Of Sports can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[10].LevelOfParticpationId == 0)
+                        {
+                            strMessage = "Level of Participation can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[10].Positionid == 0)
+                        {
+                            strMessage = "Position can not be left blank !";
+                            return strMessage;
+                        }
+                        if (achivement[10].YearOfRep == 0)
+                        {
+                            strMessage = "Year Of Representation can not be left blank !";
+                            return strMessage;
+                        }
+
+                    }
+
+                }
+
+
+
+
+                else
+                {
+                    strMessage = "pass";
+                }
+
+            }
+
+            catch
+            {
+                strMessage = "Fail";
+            }
+            return strMessage;
+        }
