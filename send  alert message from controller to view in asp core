@@ -1,0 +1,30 @@
+TempData["ErrorMessage"] = "You are not eligible to print Intimation Letter !";  // 1st set message
+
+
+ public async Task<IActionResult> StudentDashbaord()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.Message = TempData["ErrorMessage"] as string;
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Registration");
+            }
+
+        } // asign in ViewBag.Message 
+
+
+            @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <script type="text/javascript">
+            debugger;
+            alert("@ViewBag.Message");
+            window.close();
+            //swal("", @ViewBag.Message, "warning")
+
+           
+        </script>
+    }//then call view
+        
